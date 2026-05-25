@@ -1,0 +1,36 @@
+Number,Created,Created by,Assigned to,Active,Assignment group,Short description,Description,Requested By,State,Priority,Resolved,Resolved by,Actual start,Actual end,Closed,Closed by,Business resolve time,Business duration,Close notes,Close code,Opened,Opened by,Work notes,Updated,Updated by,SLA due,Resolve time,Expected start,Category
+INC5702779,2025-05-01 03:34:33,SVCSAPCLOUDALM01@heiway.net,,FALSE,ERP SAP CORE Monitoring/Triage Team,[Cloud ALM for Operations][P1C010] [ERROR] P1C010 (ABAP Response Time),"Service Name: P1C010
+Service Type: SAP S/4HANA",SAP Cloud ALM User,Closed,2 - High,2025-05-01 03:39:34,SAP Cloud ALM User,,,2025-05-08 04:00:14,SAP Cloud ALM User,0,0,Alert closed from CALM Event Situation,Closed/Resolved by Caller,2025-05-01 03:34:32,SAP Cloud ALM User,"Timestamp : 2025-05-01T01:34:30.531021063Z
+Start Time : 2025-05-01T01:34:30.531021063Z
+Update Time : 2025-05-01T01:34:30.531021063Z
+Link to alert : https://example.invalid/cloud-alm-alert",2025-05-08 04:00:14,system,,302,,Inquiry / Help
+INC5702807,2025-05-01 04:41:46,SACHAB01@heiway.net,Revathi Lalam,FALSE,ERP SAP CORE Source To Pay Team,IDOC found related to PORDCR103,"Requested By: Example User
+Urgency: 3
+Impact: 3
+Service Offering: ERP SAP Core
+Configuration item: Core S/4 Production (P1C)
+Short description: IDOC found related to PORDCR103
+Description: IDOC found related to PORDCR103.",Example User,Closed,4 - Low,2025-05-08 12:08:22,Revathi Lalam,,,2025-05-15 13:00:03,Revathi Lalam,144000,144000,"1. Detailed description of issue: IDOC found related to PORDCR103
+2. Root cause of service disruption: Issue occurred due to no budget available for WBS element used for creating PO.
+3. Action Taken: Provided the analysis. PO is now successfully created.
+4. Workaround Applied: NA
+5. Dependency with other modules: NA
+6. Customer Feedback/Verification: Proceeding with closure.",Solved by User Instruction,2025-05-01 04:41:46,Example User,,2025-05-15 13:00:03,system,,631596,,Incident
+INC5702865,2025-05-01 07:30:25,system,,FALSE,ERP SAP CORE Monitoring/Triage Team,New Relic Issue: heip1cpas06z2_P1C_06 query result is >= 5000.0 on 'Dialog Response Time is High - Critical',"heip1cpas06z2_P1C_06 query result is >= 5000.0 on 'Dialog Response Time is High - Critical'
+Issue ID: 27b7324b-ac91-4158-9a21-87c946246c11
+Priority: Critical
+Issue State: Activated
+Workflow Name: ${workflow_name}
+Trigger: STATE_CHANGE
+Sources:
+- newrelic
+Alert Policies:
+- SAP_Core_SNOW_Alert_Policy_P2
+Impacted Entities:
+- heip1cpas06z2_P1C_06
+Alert Conditions:
+- Dialog Response Time is High - Critical
+Additional Payload:
+The dialog response time for the SAP instance has exceeded the threshold. Please investigate the instance.
+New Relic URL to Issue:
+https://example.invalid/newrelic-issue",SVCNR USER,Closed,2 - High,2025-05-01 07:40:54,SVCNR USER,,,2025-05-01 07:40:54,SVCNR USER,0,0,The issue in New Relic was CLOSED. Updating this incident based on that action.,Solved (Permanently),2025-05-01 07:30:25,,,2025-05-01 07:40:54,SVCNRUSER@heiway.net,,629,,Incident
