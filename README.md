@@ -50,6 +50,9 @@ Install optional dashboard dependencies, then run:
 streamlit run src/dashboard.py
 ```
 
+<!-- Trigger redeploy -->
+Deployed to Streamlit for review — redeploy trigger.
+
 ## Scoring Dimensions
 
 | Dimension | Weight |
