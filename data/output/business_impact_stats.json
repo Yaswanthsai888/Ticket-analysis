@@ -1,0 +1,65 @@
+{
+  "total_tickets": 4006,
+  "auto_resolved_noise_count": 2854,
+  "actionable_alert_count": 535,
+  "blind_spot_count": 617,
+  "noise_rate_pct": 71.2,
+  "actionable_rate_pct": 13.4,
+  "blind_spot_rate_pct": 15.4,
+  "by_platform": [
+    {
+      "platform": "New Relic",
+      "total_incidents": 2551,
+      "auto_resolved_noise": 2057,
+      "actionable_alerts": 482,
+      "blind_spots": 12,
+      "actionable_rate_pct": 18.9
+    },
+    {
+      "platform": "SAP Cloud ALM",
+      "total_incidents": 850,
+      "auto_resolved_noise": 797,
+      "actionable_alerts": 53,
+      "blind_spots": 0,
+      "actionable_rate_pct": 6.2
+    },
+    {
+      "platform": "ServiceNow Manual",
+      "total_incidents": 605,
+      "auto_resolved_noise": 0,
+      "actionable_alerts": 0,
+      "blind_spots": 605,
+      "actionable_rate_pct": 0.0
+    }
+  ],
+  "top_blind_spot_groups": [
+    {
+      "group": "ERP SAP CORE Market To Cash Team",
+      "unmonitored_business_tickets": 237
+    },
+    {
+      "group": "ERP SAP CORE Record To Report Team",
+      "unmonitored_business_tickets": 144
+    },
+    {
+      "group": "ERP SAP CORE Source To Pay Team",
+      "unmonitored_business_tickets": 130
+    },
+    {
+      "group": "ERP SAP CORE Demand To Warehouse Team",
+      "unmonitored_business_tickets": 45
+    },
+    {
+      "group": "ERP SAP CORE BTP Team",
+      "unmonitored_business_tickets": 30
+    },
+    {
+      "group": "ERP SAP CORE ABAP Team",
+      "unmonitored_business_tickets": 29
+    },
+    {
+      "group": "ERP SAP CORE Monitoring/Triage Team",
+      "unmonitored_business_tickets": 2
+    }
+  ]
+}

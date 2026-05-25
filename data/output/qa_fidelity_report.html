@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Log Fidelity QA Report</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; margin: 0; padding: 24px; color: #1a202c; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 28px; color: #2d3748; border-bottom: 3px solid #4299e1; padding-bottom: 12px; }
+  h2 { font-size: 18px; margin: 0 0 8px; }
+  .summary-bar { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+  .stat-card { background: white; border-radius: 10px; padding: 16px 24px; flex: 1; min-width: 140px;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.1); text-align: center; }
+  .stat-card .value { font-size: 32px; font-weight: 700; }
+  .stat-card .label { font-size: 12px; color: #718096; margin-top: 4px; }
+  .team-card { background: white; border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.1); border-left: 6px solid #fc8181; }
+  .rag-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 13px;
+                font-weight: 600; background: #fff5f5; color: #c53030; margin-left: 10px; }
+  .score { font-size: 26px; font-weight: 700; color: #c53030; }
+  .gaps { margin: 8px 0; font-size: 13px; color: #4a5568; }
+  .gap-tag { display: inline-block; background: #edf2f7; border-radius: 4px; padding: 2px 8px;
+              margin: 2px; font-size: 12px; }
+  .worst-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  .worst-table th { background: #f7fafc; padding: 6px 10px; text-align: left; color: #4a5568; }
+  .worst-table td { padding: 6px 10px; border-top: 1px solid #e2e8f0; }
+  .narrative { background: #fffbeb; border-left: 4px solid #f6ad55; padding: 12px 16px;
+                border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 14px; line-height: 1.6; }
+  .footer { text-align: center; color: #a0aec0; font-size: 12px; margin-top: 32px; }
+  .red { color: #c53030; }
+  .amber { color: #c05621; }
+  .green { color: #276749; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Log Fidelity QA Report</h1>
+  <p style="color:#718096">Generated: 2026-05-10 15:00</p>
+  <div class="summary-bar">
+    <div class="stat-card"><div class="value">3389</div><div class="label">Total Incidents</div></div>
+    <div class="stat-card"><div class="value">7</div><div class="label">Teams Assessed</div></div>
+    <div class="stat-card"><div class="value red">0</div><div class="label">Red Teams</div></div>
+    <div class="stat-card"><div class="value amber">4</div><div class="label">Amber Teams</div></div>
+    <div class="stat-card"><div class="value green">3</div><div class="label">Green Teams</div></div>
+  </div>
+  
+  <div class="team-card" style="border-left-color:#f6ad55">
+    <h2>ERP SAP CORE BTP Team
+      <span class="rag-badge" style="background:#fffaf0;color:#c05621">Amber</span>
+    </h2>
+    <div class="score" style="color:#c05621">59.48 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      331 incidents &nbsp;|&nbsp; Avg MTTR: 2682.0 min
+      &nbsp;|&nbsp; Poor/NI: 270
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Root Cause Analysis</span><span class="gap-tag">Alert URL</span><span class="gap-tag">Error Code</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE BTP Team's incident logs are currently at 59% fidelity with an Amber RAG status, meaning 270 out of 331 incidents lack the detail needed for efficient troubleshooting. The two biggest gaps slowing down your investigations are missing Root Cause Analysis documentation and absent Alert URLs, which force engineers to hunt for context instead of jumping straight to resolution. This sprint, require your team to paste the direct New Relic alert URL into every incident ticket at creation time—this single field will cut down the average 45-hour resolution time by eliminating the "where did this alert come from" question that currently delays every investigation.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5745044</td><td>53.67</td><td>New Relic Issue: YCRS_IF_PVDASH_SRV query result is > 5000.0 on 'High Web Response Time – BTP Core Microservices'</td></tr><tr><td>INC5750175</td><td>53.67</td><td>New Relic Issue: YSTP_IF_CCP_CONTRACTCHANGEDINCORE_SRV query result is > 80.0 for 120 minutes on 'High Heap Memory Utili</td></tr><tr><td>INC5751173</td><td>53.67</td><td>New Relic Issue: YCRS_IF_PVDASH_SRV query result is > 3000.0 on 'High Web Response Time – BTP Core Microservices'</td></tr>
+    </table>
+  </div>
+
+  <div class="team-card" style="border-left-color:#68d391">
+    <h2>ERP SAP CORE Demand To Warehouse Team
+      <span class="rag-badge" style="background:#f0fff4;color:#276749">Green</span>
+    </h2>
+    <div class="score" style="color:#276749">73.84 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      105 incidents &nbsp;|&nbsp; Avg MTTR: 1604.9 min
+      &nbsp;|&nbsp; Poor/NI: 22
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Impacted Entity</span><span class="gap-tag">Alert URL</span><span class="gap-tag">Error Code</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE Demand To Warehouse Team is in Green status with a 73.84% average log fidelity score across 105 incidents, but 22 incidents still have poor logging that's slowing down investigations. The two biggest gaps causing delays are missing "Impacted Entity" information (so engineers don't know which specific system or component failed) and missing "Error Code" details (making root cause analysis take longer). This sprint, update your New Relic alert configuration for the recurring "Core DTW IDoc failures" alert to automatically capture and pass through the specific error code and affected entity name—this single change would immediately improve the 61% fidelity score on your most common incident type and cut investigation time.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5746769</td><td>61.17</td><td>New Relic Issue: Material master query result is >= 1.0 on 'Core DTW IDoc failures detected in Production'</td></tr><tr><td>INC5752069</td><td>61.17</td><td>New Relic Issue: Material master query result is >= 1.0 on 'Core DTW IDoc failures detected in Production'</td></tr><tr><td>INC5753794</td><td>61.17</td><td>New Relic Issue: Material master query result is >= 1.0 on 'Core DTW IDoc failures detected in Production'</td></tr>
+    </table>
+  </div>
+
+  <div class="team-card" style="border-left-color:#f6ad55">
+    <h2>ERP SAP CORE FP&A
+      <span class="rag-badge" style="background:#fffaf0;color:#c05621">Amber</span>
+    </h2>
+    <div class="score" style="color:#c05621">61.17 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      5 incidents &nbsp;|&nbsp; Avg MTTR: 1471.1 min
+      &nbsp;|&nbsp; Poor/NI: 5
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Impacted Entity</span><span class="gap-tag">Error Code</span><span class="gap-tag">Alert URL</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE FP&A team's log quality is currently sitting at 61% with an Amber status, meaning all 5 recent incidents are missing critical diagnostic information that's slowing down your investigations. The two biggest gaps are the lack of "Impacted Entity" details (which system or cost center is affected) and missing "Error Code" information, both of which force your engineers to dig through logs manually instead of jumping straight to the root cause. This sprint, add a requirement to your New Relic alert configuration to automatically capture and pass through the specific cost center ID and BPM IDoc error code whenever the "Core BPM IDoc failures" alert fires—this single change will immediately give your team the context they need when incidents land in their queue.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5851926</td><td>61.17</td><td>New Relic Issue: Change One or More Cost Centers query result is >= 1.0 on 'Core BPM IDoc failures detected in Productio</td></tr><tr><td>INC5886393</td><td>61.17</td><td>New Relic Issue: Change One or More Cost Centers query result is >= 1.0 on 'Core BPM IDoc failures detected in Productio</td></tr><tr><td>INC5908668</td><td>61.17</td><td>New Relic Issue: Change One or More Cost Centers query result is >= 1.0 on 'Core BPM IDoc failures detected in Productio</td></tr>
+    </table>
+  </div>
+
+  <div class="team-card" style="border-left-color:#f6ad55">
+    <h2>ERP SAP CORE Monitoring/Triage Team
+      <span class="rag-badge" style="background:#fffaf0;color:#c05621">Amber</span>
+    </h2>
+    <div class="score" style="color:#c05621">60.4 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      2713 incidents &nbsp;|&nbsp; Avg MTTR: 719.9 min
+      &nbsp;|&nbsp; Poor/NI: 1993
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Root Cause Analysis</span><span class="gap-tag">Alert URL</span><span class="gap-tag">Impacted Entity</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE Monitoring/Triage Team is currently at Amber status with an average log fidelity score of 60.4, meaning nearly three-quarters of your 2,713 incidents lack the detail needed for efficient investigation. The two biggest gaps slowing down your team are missing Root Cause Analysis documentation and absent Alert URLs, which force engineers to hunt for context instead of jumping straight to resolution. This sprint, require that every incident ticket include the direct Alert URL from your monitoring tool before it's assigned—this single change will cut down the average 12-hour resolution time by giving your team immediate access to the full alert context and related metrics.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5898345</td><td>35.5</td><td>[Cloud ALM for Operations][P1C010] [WARNING] P1C010 (Filesystem Full)</td></tr><tr><td>INC5898348</td><td>35.5</td><td>[Cloud ALM for Operations][P1C010] [WARNING] P1C010 (Filesystem Full)</td></tr><tr><td>INC5990857</td><td>35.5</td><td>[Cloud ALM for Operations][P1C.010] [WARNING] P1C.010 (ABAP Response Time)</td></tr>
+    </table>
+  </div>
+
+  <div class="team-card" style="border-left-color:#68d391">
+    <h2>ERP SAP CORE Record To Report Team
+      <span class="rag-badge" style="background:#f0fff4;color:#276749">Green</span>
+    </h2>
+    <div class="score" style="color:#276749">71.94 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      108 incidents &nbsp;|&nbsp; Avg MTTR: 4679.2 min
+      &nbsp;|&nbsp; Poor/NI: 37
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Impacted Entity</span><span class="gap-tag">Alert URL</span><span class="gap-tag">Error Code</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE Record To Report Team has a log fidelity score of 72% with a Green RAG status, but 37 of your 108 incidents still have poor logging quality that's slowing down investigations. The two biggest gaps are missing "Impacted Entity" information (so engineers don't know which system or business unit is affected) and missing "Error Code" details (forcing them to dig through logs manually instead of jumping straight to root cause). This sprint, update your New Relic alert configurations to automatically capture and pass the specific entity identifier and SAP error code for those recurring IDoc failure alerts—this alone would improve logging on your most common incident type and cut investigation time significantly.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5752187</td><td>61.17</td><td>New Relic Issue: Replication of Currency Rates query result is >= 1.0 on 'Core RTR IDoc failures detected in Production'</td></tr><tr><td>INC5763617</td><td>61.17</td><td>New Relic Issue: Replication of Currency Rates query result is >= 1.0 on 'Core RTR IDoc failures detected in Production'</td></tr><tr><td>INC5767620</td><td>61.17</td><td>New Relic Issue: Replication of Currency Rates query result is >= 1.0 on 'Core RTR IDoc failures detected in Production'</td></tr>
+    </table>
+  </div>
+
+  <div class="team-card" style="border-left-color:#68d391">
+    <h2>ERP SAP CORE Source To Pay Team
+      <span class="rag-badge" style="background:#f0fff4;color:#276749">Green</span>
+    </h2>
+    <div class="score" style="color:#276749">70.46 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      109 incidents &nbsp;|&nbsp; Avg MTTR: 3776.1 min
+      &nbsp;|&nbsp; Poor/NI: 50
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Impacted Entity</span><span class="gap-tag">Alert URL</span><span class="gap-tag">Error Code</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE Source To Pay Team's log quality is currently at 70% fidelity with a Green RAG status, but nearly half of your 109 incidents (50 cases) still have poor logging that's slowing down investigations. The two biggest gaps are missing "Impacted Entity" information and "Error Code" details, which means your engineers can't quickly identify which systems or transactions are affected or what specific failure occurred. This sprint, update your New Relic alert configurations to automatically capture and pass through the SAP error code and affected entity (like the specific IDoc type or transaction) in the incident payload—this single change will immediately help your team triage those recurring MB_CREATE_GOODS_MOVEMENT and purchase order failures faster.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5739206</td><td>61.17</td><td>New Relic Issue: Create purchase order query result is >= 1.0 on 'Core STP IDoc failures detected in Production'</td></tr><tr><td>INC5741480</td><td>61.17</td><td>New Relic Issue: Post goods movements with MB_CREATE_GOODS_MOVEMENT query result is >= 1.0 on 'Core STP IDoc failures de</td></tr><tr><td>INC5748800</td><td>61.17</td><td>New Relic Issue: Post goods movements with MB_CREATE_GOODS_MOVEMENT query result is >= 1.0 on 'Core STP IDoc failures de</td></tr>
+    </table>
+  </div>
+
+  <div class="team-card" style="border-left-color:#f6ad55">
+    <h2>ERP SAP CORE Tech & Infra Team
+      <span class="rag-badge" style="background:#fffaf0;color:#c05621">Amber</span>
+    </h2>
+    <div class="score" style="color:#c05621">57.54 / 100</div>
+    <div style="font-size:13px;color:#718096;margin:4px 0">
+      17 incidents &nbsp;|&nbsp; Avg MTTR: 125.2 min
+      &nbsp;|&nbsp; Poor/NI: 12
+    </div>
+    <div class="gaps">
+      <strong>Top gaps:</strong>
+      <span class="gap-tag">Impacted Entity</span><span class="gap-tag">Root Cause Analysis</span><span class="gap-tag">Action Taken</span>
+    </div>
+    <div class="narrative">Your ERP SAP CORE Tech & Infra Team's incident logs are currently scoring 57.54 out of 100, putting you in Amber status, with 12 out of 17 incidents having poor documentation quality. The two fields causing the most investigation delays are "Impacted Entity" (which system or service was affected) and "Action Taken" (what steps were performed to resolve the issue)—without these, engineers waste time reconstructing what happened and what was already tried. This sprint, add a simple checklist to your incident template requiring responders to document which specific entity was impacted and what actions they took before closing tickets, starting with your recurring WebDispatcher availability alerts that are consistently missing this context.</div>
+    <table class="worst-table">
+      <tr><th>Incident ID</th><th>Score</th><th>Description</th></tr>
+      <tr><td>INC5753229</td><td>53.67</td><td>New Relic Issue: MinionWebdispatcherforP2W-Availability query result is > 20000.0 on 'WebDispatcher for prod Response Ti</td></tr><tr><td>INC5781339</td><td>53.67</td><td>New Relic Issue: MinionWebdispatcherforP2W-Availability query result is > 20000.0 on 'WebDispatcher for prod Response Ti</td></tr><tr><td>INC5781835</td><td>53.67</td><td>New Relic Issue: MinionWebdispatcherforP2W-Availability query result is > 20000.0 on 'WebDispatcher for prod Response Ti</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">Generated by USECASE-1 Log Fidelity Assessment Pipeline</div>
+</div>
+</body>
+</html>

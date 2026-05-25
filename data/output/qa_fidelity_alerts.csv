@@ -1,0 +1,8 @@
+Assignment_Group,RAG_Status,Avg_Log_Fidelity_Score,Incident_Count,Poor_Or_Needs_Improvement,Avg_MTTR_Minutes,Top_Missing_Signals
+ERP SAP CORE BTP Team,Amber,59.48,331,270,2682.0,Root Cause Analysis | Alert URL | Error Code
+ERP SAP CORE Demand To Warehouse Team,Green,73.84,105,22,1604.9,Impacted Entity | Alert URL | Error Code
+ERP SAP CORE FP&A,Amber,61.17,5,5,1471.1,Impacted Entity | Error Code | Alert URL
+ERP SAP CORE Monitoring/Triage Team,Amber,60.4,2713,1993,719.9,Root Cause Analysis | Alert URL | Impacted Entity
+ERP SAP CORE Record To Report Team,Green,71.94,108,37,4679.2,Impacted Entity | Alert URL | Error Code
+ERP SAP CORE Source To Pay Team,Green,70.46,109,50,3776.1,Impacted Entity | Alert URL | Error Code
+ERP SAP CORE Tech & Infra Team,Amber,57.54,17,12,125.2,Impacted Entity | Root Cause Analysis | Action Taken

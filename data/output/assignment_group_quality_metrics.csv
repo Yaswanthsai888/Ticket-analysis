@@ -1,0 +1,9 @@
+Assignment_Group,Incident_Count,Average_Log_Fidelity_Score,Average_MTTR_Minutes,Poor_Or_Needs_Improvement_Count,Poor_Or_Needs_Improvement_Rate
+ERP SAP CORE ABAP Team,1,76.17,4319.98,0,0.0
+ERP SAP CORE BTP Team,331,59.48,2682.02,270,0.816
+ERP SAP CORE Demand To Warehouse Team,105,73.84,1604.93,22,0.21
+ERP SAP CORE FP&A,5,61.17,1471.13,5,1.0
+ERP SAP CORE Monitoring/Triage Team,2713,60.4,719.88,1993,0.735
+ERP SAP CORE Record To Report Team,108,71.94,4679.19,37,0.343
+ERP SAP CORE Source To Pay Team,109,70.46,3776.09,50,0.459
+ERP SAP CORE Tech & Infra Team,17,57.54,125.22,12,0.706

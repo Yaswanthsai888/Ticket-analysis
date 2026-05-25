@@ -1,0 +1,186 @@
+{
+  "p80_threshold_minutes": 5964.58,
+  "total_long_running": 100,
+  "clusters": [
+    {
+      "cluster_id": "New Relic | BTP",
+      "incident_count": 3,
+      "average_mttr_minutes": 11727.7,
+      "max_mttr_minutes": 18580.3,
+      "average_log_fidelity_score": 53.67,
+      "top_missing_signals": [
+        {
+          "signal": "Impacted Entity",
+          "count": 3
+        },
+        {
+          "signal": "Error Code",
+          "count": 3
+        },
+        {
+          "signal": "Alert URL",
+          "count": 3
+        },
+        {
+          "signal": "Root Cause Analysis",
+          "count": 3
+        },
+        {
+          "signal": "Action Taken",
+          "count": 3
+        }
+      ],
+      "example_incident_ids": [
+        "INC5884129",
+        "INC6167191",
+        "INC6185895"
+      ]
+    },
+    {
+      "cluster_id": "New Relic | Demand To Warehouse",
+      "incident_count": 3,
+      "average_mttr_minutes": 11909.8,
+      "max_mttr_minutes": 15374.4,
+      "average_log_fidelity_score": 69.33,
+      "top_missing_signals": [
+        {
+          "signal": "Impacted Entity",
+          "count": 3
+        },
+        {
+          "signal": "Alert URL",
+          "count": 3
+        },
+        {
+          "signal": "Action Taken",
+          "count": 3
+        }
+      ],
+      "example_incident_ids": [
+        "INC6183869",
+        "INC6187720",
+        "INC6191901"
+      ]
+    },
+    {
+      "cluster_id": "New Relic | ERP SAP Core",
+      "incident_count": 12,
+      "average_mttr_minutes": 16401.1,
+      "max_mttr_minutes": 26212.8,
+      "average_log_fidelity_score": 70.35,
+      "top_missing_signals": [
+        {
+          "signal": "Error Code",
+          "count": 12
+        },
+        {
+          "signal": "Alert URL",
+          "count": 12
+        },
+        {
+          "signal": "Impacted Entity",
+          "count": 8
+        },
+        {
+          "signal": "Root Cause Analysis",
+          "count": 5
+        },
+        {
+          "signal": "Action Taken",
+          "count": 5
+        }
+      ],
+      "example_incident_ids": [
+        "INC6148387",
+        "INC6150227",
+        "INC6150491"
+      ]
+    },
+    {
+      "cluster_id": "New Relic | Record To Report",
+      "incident_count": 31,
+      "average_mttr_minutes": 10582.5,
+      "max_mttr_minutes": 31586.4,
+      "average_log_fidelity_score": 77.49,
+      "top_missing_signals": [
+        {
+          "signal": "Impacted Entity",
+          "count": 31
+        },
+        {
+          "signal": "Alert URL",
+          "count": 31
+        },
+        {
+          "signal": "Error Code",
+          "count": 26
+        }
+      ],
+      "example_incident_ids": [
+        "INC5998477",
+        "INC6004866",
+        "INC6013544"
+      ]
+    },
+    {
+      "cluster_id": "New Relic | Source To Pay",
+      "incident_count": 9,
+      "average_mttr_minutes": 8980.5,
+      "max_mttr_minutes": 13250.4,
+      "average_log_fidelity_score": 79.8,
+      "top_missing_signals": [
+        {
+          "signal": "Impacted Entity",
+          "count": 9
+        },
+        {
+          "signal": "Alert URL",
+          "count": 9
+        },
+        {
+          "signal": "Error Code",
+          "count": 5
+        }
+      ],
+      "example_incident_ids": [
+        "INC5998142",
+        "INC6004003",
+        "INC6012168"
+      ]
+    },
+    {
+      "cluster_id": "SAP Cloud ALM | ERP SAP Core",
+      "incident_count": 42,
+      "average_mttr_minutes": 33768.3,
+      "max_mttr_minutes": 100598.3,
+      "average_log_fidelity_score": 56.99,
+      "top_missing_signals": [
+        {
+          "signal": "Impacted Entity",
+          "count": 42
+        },
+        {
+          "signal": "Threshold / Metric Value",
+          "count": 42
+        },
+        {
+          "signal": "Correlation ID",
+          "count": 42
+        },
+        {
+          "signal": "Payload / Context",
+          "count": 42
+        },
+        {
+          "signal": "Alert URL",
+          "count": 37
+        }
+      ],
+      "example_incident_ids": [
+        "INC5883708",
+        "INC5883709",
+        "INC5884131"
+      ]
+    }
+  ]
+}

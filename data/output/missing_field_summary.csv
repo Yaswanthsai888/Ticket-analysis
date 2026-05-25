@@ -1,0 +1,12 @@
+Signal,Missing_Count,Missing_Rate
+Has_Timestamp,0,0.0
+Has_Source_System,0,0.0
+Has_Service_Name,0,0.0
+Has_Impacted_Entity,2619,0.773
+Has_Error_Code,2187,0.645
+Has_Threshold,850,0.251
+Has_Alert_URL,3123,0.922
+Has_Correlation_ID,850,0.251
+Has_Payload_Context,850,0.251
+Has_RCA,2962,0.874
+Has_Action_Taken,1585,0.468

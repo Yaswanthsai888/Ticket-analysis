@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "error": "Expecting ',' delimiter: line 208 column 6 (char 8020)",
+  "summaries": [
+    {
+      "platform": "New Relic",
+      "incident_count": 2539,
+      "average_log_fidelity_score": 64.9,
+      "average_mttr_minutes": 935.01,
+      "automation_ready_pct": 26.5,
+      "signal_coverage_pct": {
+        "Event Timestamp (ISO 8601)": 100.0,
+        "Source Monitoring System": 100.0,
+        "Service / Business Component Name": 100.0,
+        "Impacted Host / Pod / CI / SAP Component": 30.3,
+        "Error Code / Alert Code / Exception ID": 13.9,
+        "Metric Value & Threshold / Trigger Condition": 100.0,
+        "Direct Alert / Trace / Dashboard URL": 9.6,
+        "Correlation ID / Trace ID / Issue ID": 100.0,
+        "Payload / Alert Policy / Additional Attributes": 100.0,
+        "Root Cause Analysis": 14.9,
+        "Action Taken / Workaround / Permanent Fix": 37.7
+      },
+      "fields_below_60pct_coverage": [
+        "Impacted Host / Pod / CI / SAP Component",
+        "Error Code / Alert Code / Exception ID",
+        "Direct Alert / Trace / Dashboard URL",
+        "Root Cause Analysis",
+        "Action Taken / Workaround / Permanent Fix"
+      ],
+      "aiops_automation_gaps": [
+        "Error Code / Alert Code / Exception ID",
+        "Impacted Host / Pod / CI / SAP Component"
+      ]
+    },
+    {
+      "platform": "SAP Cloud ALM",
+      "incident_count": 850,
+      "average_log_fidelity_score": 50.99,
+      "average_mttr_minutes": 1844.25,
+      "automation_ready_pct": 0.0,
+      "signal_coverage_pct": {
+        "Event Timestamp (ISO 8601)": 100.0,
+        "Source Monitoring System": 100.0,
+        "Service / Business Component Name": 100.0,
+        "Impacted Host / Pod / CI / SAP Component": 0.0,
+        "Error Code / Alert Code / Exception ID": 100.0,
+        "Metric Value & Threshold / Trigger Condition": 0.0,
+        "Direct Alert / Trace / Dashboard URL": 2.5,
+        "Correlation ID / Trace ID / Issue ID": 0.0,
+        "Payload / Alert Policy / Additional Attributes": 0.0,
+        "Root Cause Analysis": 5.8,
+        "Action Taken / Workaround / Permanent Fix": 99.5
+      },
+      "fields_below_60pct_coverage": [
+        "Impacted Host / Pod / CI / SAP Component",
+        "Metric Value & Threshold / Trigger Condition",
+        "Direct Alert / Trace / Dashboard URL",
+        "Correlation ID / Trace ID / Issue ID",
+        "Payload / Alert Policy / Additional Attributes",
+        "Root Cause Analysis"
+      ],
+      "aiops_automation_gaps": [
+        "Correlation ID / Trace ID / Issue ID",
+        "Impacted Host / Pod / CI / SAP Component",
+        "Metric Value & Threshold / Trigger Condition"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+platform,total_incidents,auto_resolved_noise,actionable_alerts,blind_spots,actionable_rate_pct
+New Relic,2551,2057,482,12,18.9
+SAP Cloud ALM,850,797,53,0,6.2
+ServiceNow Manual,605,0,0,605,0.0
