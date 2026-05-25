@@ -1,10 +1,5 @@
-# Import and run the dashboard module
-# Streamlit will execute the top-level code when this module is imported
-import sys
+import runpy
 from pathlib import Path
 
-# Add src to path so imports work correctly
-sys.path.insert(0, str(Path(__file__).parent / "src"))
-
-# Execute the dashboard code
-import dashboard
+# Execute the dashboard on every Streamlit rerun instead of relying on a cached import.
+runpy.run_path(str(Path(__file__).parent / "src" / "dashboard.py"))
