@@ -832,7 +832,8 @@ def generate_html_dashboard() -> str:
             html += '<h3>LLM Log Remediation Strategies</h3>';
             html += '<label for="segment-select">Select Target Cluster:</label><br>';
             html += '<select id="segment-select" onchange="updateRecommendation()">';
-            recommendations.forEach(rec => {{
+            const sortedRecs = [...recommendations].sort((a, b) => (a.Segment_ID || '').localeCompare(b.Segment_ID || ''));
+            sortedRecs.forEach(rec => {{
                 html += `<option value="${{rec.Segment_ID}}">${{rec.Segment_ID}}</option>`;
             }});
             html += '</select>';

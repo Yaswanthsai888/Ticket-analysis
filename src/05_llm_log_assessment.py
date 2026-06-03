@@ -37,13 +37,7 @@ def missing_signals(row: dict[str, str]) -> list[str]:
 
 
 def segment_key(row: dict[str, str]) -> str:
-    return " | ".join(
-        [
-            row.get("Platform", "Unknown") or "Unknown",
-            row.get("System_Area", "Unknown") or "Unknown",
-            row.get("Quality_Bucket", "Unknown") or "Unknown",
-        ]
-    )
+    return row.get("Assignment_Group", "Unknown") or "Unknown"
 
 
 def compact_incident(row: dict[str, str]) -> dict[str, object]:
@@ -98,8 +92,17 @@ def build_segment_payload(segment_id: str, segment_rows: list[dict[str, str]], e
 
     scores = [as_float(row.get("Log_Fidelity_Score")) for row in segment_rows]
     mttr = [as_float(row.get("MTTR_Minutes")) for row in segment_rows if as_float(row.get("MTTR_Minutes")) > 0]
+    # Collect the distinct platforms / system areas for context
+    platforms = list(dict.fromkeys(r.get("Platform", "") for r in segment_rows if r.get("Platform")))
+    system_areas = list(dict.fromkeys(r.get("System_Area", "") for r in segment_rows if r.get("System_Area")))
+    quality_buckets = list(dict.fromkeys(r.get("Quality_Bucket", "") for r in segment_rows if r.get("Quality_Bucket")))
     return {
         "segment_id": segment_id,
+        "assignment_group": segment_id,
+        "platforms": platforms,
+        "system_areas": system_areas,
+        "quality_buckets": quality_buckets,
+        # Keep legacy keys for backward-compat with LLM prompt
         "platform": first.get("Platform", ""),
         "system_area": first.get("System_Area", ""),
         "quality_bucket": first.get("Quality_Bucket", ""),
@@ -142,10 +145,11 @@ def assess_segment(segment_id: str, segment_rows: list[dict[str, str]], examples
     ]
 
     return {
-        "Segment_ID": segment_id,
-        "Platform": str(payload["platform"]),
-        "System_Area": str(payload["system_area"]),
-        "Quality_Bucket": str(payload["quality_bucket"]),
+        "Segment_ID": segment_id,           # Now == Assignment_Group
+        "Assignment_Group": segment_id,
+        "Platform": ", ".join(payload["platforms"]),
+        "System_Area": ", ".join(payload["system_areas"]),
+        "Quality_Bucket": ", ".join(payload["quality_buckets"]),
         "Incident_Count": str(payload["incident_count"]),
         "Average_Log_Fidelity_Score": str(payload["average_score"]),
         "Average_MTTR_Minutes": str(payload["average_mttr_minutes"]),

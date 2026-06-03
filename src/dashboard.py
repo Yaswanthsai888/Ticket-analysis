@@ -262,7 +262,10 @@ with tabs[3]:
     recommendations = load_csv("ai_recommendations.csv")
     if recommendations is not None and {"Segment_ID", "Segment_Assessment"}.issubset(recommendations.columns):
         st.subheader("LLM Log Remediation Strategies")
-        selected = st.selectbox("Select Target Cluster:", recommendations["Segment_ID"].tolist())
+        selected = st.selectbox(
+            "Select Target Cluster:",
+            sorted(recommendations["Segment_ID"].tolist())
+        )
         row = recommendations[recommendations["Segment_ID"] == selected].iloc[0]
         
         c1, c2, c3 = st.columns(3)
@@ -270,101 +273,94 @@ with tabs[3]:
         c2.markdown(create_metric_card("Cluster Score", f"{row.get('Average_Log_Fidelity_Score', '–')} / 100"), unsafe_allow_html=True)
         c3.markdown(create_metric_card("MTTR Drag", f"{row.get('Average_MTTR_Minutes', '–')} min"), unsafe_allow_html=True)
         
-        # Get ALL ticket IDs for this cluster by filtering the scored incidents
-        segment_parts = selected.split(" | ")
-        if len(segment_parts) == 3:
-            platform, system_area, quality_bucket = segment_parts
-            cluster_incidents = df[
-                (df["Platform"] == platform) &
-                (df["System_Area"] == system_area) &
-                (df["Quality_Bucket"] == quality_bucket)
-            ]
-            
-            if len(cluster_incidents) > 0:
-                with st.expander(f"📋 View Affected Tickets ({len(cluster_incidents)} incidents)", expanded=False):
-                    st.markdown("<p style='color: #94a3b8; font-size: 13px; margin-bottom: 12px;'>Click on any ticket to see why it's in this cluster:</p>", unsafe_allow_html=True)
+        # Get ALL ticket IDs for this cluster by filtering on Assignment_Group
+        cluster_incidents = df[df["Assignment_Group"] == selected]
+        
+        if len(cluster_incidents) > 0:
+            with st.expander(f"📋 View Affected Tickets ({len(cluster_incidents)} incidents)", expanded=False):
+                st.markdown("<p style='color: #94a3b8; font-size: 13px; margin-bottom: 12px;'>Click on any ticket to see why it's in this cluster:</p>", unsafe_allow_html=True)
+                
+                # Create a selectbox for ticket selection
+                ticket_options = ["Select a ticket..."] + cluster_incidents["Incident_ID"].tolist()
+                selected_ticket = st.selectbox("Select Incident ID:", ticket_options, key="ticket_selector")
+                
+                if selected_ticket != "Select a ticket...":
+                    ticket_data = cluster_incidents[cluster_incidents["Incident_ID"] == selected_ticket].iloc[0]
                     
-                    # Create a selectbox for ticket selection
-                    ticket_options = ["Select a ticket..."] + cluster_incidents["Incident_ID"].tolist()
-                    selected_ticket = st.selectbox("Select Incident ID:", ticket_options, key="ticket_selector")
+                    # Display ticket details
+                    st.markdown(f"""
+                    <div style="background: rgba(0, 242, 254, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(0, 242, 254, 0.2); margin-top: 16px;">
+                        <h4 style="color: #00f2fe; margin-top: 0;">📄 {selected_ticket}</h4>
+                    </div>
+                    """, unsafe_allow_html=True)
                     
-                    if selected_ticket != "Select a ticket...":
-                        ticket_data = cluster_incidents[cluster_incidents["Incident_ID"] == selected_ticket].iloc[0]
-                        
-                        # Display ticket details
+                    # Key metrics
+                    col1, col2, col3, col4 = st.columns(4)
+                    col1.metric("Log Fidelity Score", f"{ticket_data.get('Log_Fidelity_Score', 'N/A')}/100")
+                    col2.metric("Quality Bucket", ticket_data.get('Quality_Bucket', 'N/A'))
+                    col3.metric("MTTR (minutes)", f"{ticket_data.get('MTTR_Minutes', 'N/A'):.1f}" if pd.notna(ticket_data.get('MTTR_Minutes')) else 'N/A')
+                    col4.metric("Priority", ticket_data.get('Priority', 'N/A'))
+                    
+                    # Missing signals - why it's in this cluster
+                    st.markdown("#### 🔍 Missing Log Signals (Why it's in this cluster)")
+                    missing_signals = []
+                    signal_checks = {
+                        "Has_Timestamp": "Event timestamp",
+                        "Has_Source_System": "Monitoring source system",
+                        "Has_Service_Name": "Service or business component",
+                        "Has_Impacted_Entity": "Impacted host, pod, instance, CI, or SAP component",
+                        "Has_Error_Code": "Error code, alert code, exception, or failed transaction identifier",
+                        "Has_Threshold": "Metric value, threshold, or trigger condition",
+                        "Has_Alert_URL": "Direct alert, trace, issue, or dashboard URL",
+                        "Has_Correlation_ID": "Correlation ID, issue ID, trace ID, or request ID",
+                        "Has_Payload_Context": "Payload, alert policy, workflow, trigger, or additional attributes",
+                        "Has_RCA": "Root cause analysis in close notes",
+                        "Has_Action_Taken": "Action taken, workaround, validation result, or permanent fix"
+                    }
+                    
+                    for signal, label in signal_checks.items():
+                        if str(ticket_data.get(signal, '')).lower() != 'true':
+                            missing_signals.append(f"❌ {label}")
+                    
+                    if missing_signals:
                         st.markdown(f"""
-                        <div style="background: rgba(0, 242, 254, 0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(0, 242, 254, 0.2); margin-top: 16px;">
-                            <h4 style="color: #00f2fe; margin-top: 0;">📄 {selected_ticket}</h4>
+                        <div style="background: rgba(255, 0, 68, 0.05); padding: 16px; border-radius: 8px; border-left: 4px solid #ff0844;">
+                            {'<br>'.join(missing_signals)}
                         </div>
                         """, unsafe_allow_html=True)
+                    else:
+                        st.success("✅ All log signals present")
+                    
+                    # Incident details
+                    with st.expander("📝 Incident Details", expanded=True):
+                        st.markdown(f"**Short Description:**")
+                        st.info(ticket_data.get('Short_Description', 'N/A'))
                         
-                        # Key metrics
-                        col1, col2, col3, col4 = st.columns(4)
-                        col1.metric("Log Fidelity Score", f"{ticket_data.get('Log_Fidelity_Score', 'N/A')}/100")
-                        col2.metric("Quality Bucket", ticket_data.get('Quality_Bucket', 'N/A'))
-                        col3.metric("MTTR (minutes)", f"{ticket_data.get('MTTR_Minutes', 'N/A'):.1f}" if pd.notna(ticket_data.get('MTTR_Minutes')) else 'N/A')
-                        col4.metric("Priority", ticket_data.get('Priority', 'N/A'))
+                        if pd.notna(ticket_data.get('Description_Text')) and str(ticket_data.get('Description_Text')).strip():
+                            st.markdown(f"**Description:**")
+                            st.text_area("", ticket_data.get('Description_Text', ''), height=150, key=f"desc_{selected_ticket}", disabled=True)
                         
-                        # Missing signals - why it's in this cluster
-                        st.markdown("#### 🔍 Missing Log Signals (Why it's in this cluster)")
-                        missing_signals = []
-                        signal_checks = {
-                            "Has_Timestamp": "Event timestamp",
-                            "Has_Source_System": "Monitoring source system",
-                            "Has_Service_Name": "Service or business component",
-                            "Has_Impacted_Entity": "Impacted host, pod, instance, CI, or SAP component",
-                            "Has_Error_Code": "Error code, alert code, exception, or failed transaction identifier",
-                            "Has_Threshold": "Metric value, threshold, or trigger condition",
-                            "Has_Alert_URL": "Direct alert, trace, issue, or dashboard URL",
-                            "Has_Correlation_ID": "Correlation ID, issue ID, trace ID, or request ID",
-                            "Has_Payload_Context": "Payload, alert policy, workflow, trigger, or additional attributes",
-                            "Has_RCA": "Root cause analysis in close notes",
-                            "Has_Action_Taken": "Action taken, workaround, validation result, or permanent fix"
-                        }
+                        if pd.notna(ticket_data.get('Work_Notes')) and str(ticket_data.get('Work_Notes')).strip():
+                            st.markdown(f"**Work Notes:**")
+                            st.text_area("", ticket_data.get('Work_Notes', ''), height=150, key=f"work_{selected_ticket}", disabled=True)
                         
-                        for signal, label in signal_checks.items():
-                            if str(ticket_data.get(signal, '')).lower() != 'true':
-                                missing_signals.append(f"❌ {label}")
-                        
-                        if missing_signals:
-                            st.markdown(f"""
-                            <div style="background: rgba(255, 0, 68, 0.05); padding: 16px; border-radius: 8px; border-left: 4px solid #ff0844;">
-                                {'<br>'.join(missing_signals)}
-                            </div>
-                            """, unsafe_allow_html=True)
-                        else:
-                            st.success("✅ All log signals present")
-                        
-                        # Incident details
-                        with st.expander("📝 Incident Details", expanded=True):
-                            st.markdown(f"**Short Description:**")
-                            st.info(ticket_data.get('Short_Description', 'N/A'))
-                            
-                            if pd.notna(ticket_data.get('Description_Text')) and str(ticket_data.get('Description_Text')).strip():
-                                st.markdown(f"**Description:**")
-                                st.text_area("", ticket_data.get('Description_Text', ''), height=150, key=f"desc_{selected_ticket}", disabled=True)
-                            
-                            if pd.notna(ticket_data.get('Work_Notes')) and str(ticket_data.get('Work_Notes')).strip():
-                                st.markdown(f"**Work Notes:**")
-                                st.text_area("", ticket_data.get('Work_Notes', ''), height=150, key=f"work_{selected_ticket}", disabled=True)
-                            
-                            if pd.notna(ticket_data.get('Close_Notes')) and str(ticket_data.get('Close_Notes')).strip():
-                                st.markdown(f"**Close Notes:**")
-                                st.text_area("", ticket_data.get('Close_Notes', ''), height=150, key=f"close_{selected_ticket}", disabled=True)
-                        
-                        # Additional metadata
-                        with st.expander("🔧 Technical Metadata"):
-                            meta_col1, meta_col2 = st.columns(2)
-                            with meta_col1:
-                                st.markdown(f"**Assignment Group:** {ticket_data.get('Assignment_Group', 'N/A')}")
-                                st.markdown(f"**Category:** {ticket_data.get('Category', 'N/A')}")
-                                st.markdown(f"**State:** {ticket_data.get('State', 'N/A')}")
-                                st.markdown(f"**Close Code:** {ticket_data.get('Close_Code', 'N/A')}")
-                            with meta_col2:
-                                st.markdown(f"**Created By:** {ticket_data.get('Created_By', 'N/A')}")
-                                st.markdown(f"**Resolved By:** {ticket_data.get('Resolved_By', 'N/A')}")
-                                st.markdown(f"**Ticket Lifecycle:** {ticket_data.get('Ticket_Lifecycle', 'N/A')}")
-                                st.markdown(f"**Created By Bot:** {'Yes' if ticket_data.get('Created_By_Bot') else 'No'}")
+                        if pd.notna(ticket_data.get('Close_Notes')) and str(ticket_data.get('Close_Notes')).strip():
+                            st.markdown(f"**Close Notes:**")
+                            st.text_area("", ticket_data.get('Close_Notes', ''), height=150, key=f"close_{selected_ticket}", disabled=True)
+                    
+                    # Additional metadata
+                    with st.expander("🔧 Technical Metadata"):
+                        meta_col1, meta_col2 = st.columns(2)
+                        with meta_col1:
+                            st.markdown(f"**Assignment Group:** {ticket_data.get('Assignment_Group', 'N/A')}")
+                            st.markdown(f"**Category:** {ticket_data.get('Category', 'N/A')}")
+                            st.markdown(f"**State:** {ticket_data.get('State', 'N/A')}")
+                            st.markdown(f"**Close Code:** {ticket_data.get('Close_Code', 'N/A')}")
+                        with meta_col2:
+                            st.markdown(f"**Created By:** {ticket_data.get('Created_By', 'N/A')}")
+                            st.markdown(f"**Resolved By:** {ticket_data.get('Resolved_By', 'N/A')}")
+                            st.markdown(f"**Ticket Lifecycle:** {ticket_data.get('Ticket_Lifecycle', 'N/A')}")
+                            st.markdown(f"**Created By Bot:** {'Yes' if ticket_data.get('Created_By_Bot') else 'No'}")
         
         st.markdown(f"""
         <div style="background: rgba(0, 242, 254, 0.05); padding: 24px; border-radius: 12px; border-left: 4px solid #00f2fe; margin-bottom: 24px;">
