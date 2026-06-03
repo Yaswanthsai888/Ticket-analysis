@@ -1,295 +1,216 @@
-Segment_ID,Platform,System_Area,Quality_Bucket,Incident_Count,Average_Log_Fidelity_Score,Average_MTTR_Minutes,Representative_Incident_IDs,Top_Missing_Signals,Segment_Assessment,RCA_Gaps,Automation_Gaps,Logging_Standard_Changes,Improved_Log_Template,Expected_MTTR_Impact
-SAP Cloud ALM | ERP SAP Core | Needs Improvement,SAP Cloud ALM,ERP SAP Core,Needs Improvement,845,51.06,1699.85,"INC5785407, INC5848915, INC5752491, INC5751386, INC5892586","impacted host, pod, instance, CI, or SAP component: 845 | metric value, threshold, or trigger condition: 845 | correlation ID, issue ID, trace ID, or request ID: 845 | payload, alert policy, workflow, trigger, or additional attributes: 845 | direct alert, trace, issue, or dashboard URL: 824 | root cause analysis in close notes: 796","This segment represents 845 SAP Cloud ALM incidents monitoring ERP SAP Core systems with consistently poor log quality (average score 51.06). All incidents lack fundamental diagnostic context including impacted SAP components, metric thresholds, correlation IDs, and alert payloads. The incidents primarily involve ABAP license expiration and short dumps, but the automated alerts from Cloud ALM provide minimal actionable data. Work notes show manual investigation and coordination with BASIS/ABAP teams, while close notes contain only generic auto-closure text. The extremely high average MTTR (1699 minutes / 28 hours) reflects the significant manual effort required to gather context that should be present in initial alerts.","No identification of specific SAP component, instance ID, or client causing the alert | Missing metric values (e.g., actual number of short dumps, threshold exceeded) preventing severity assessment | Absent correlation to specific ABAP dump IDs, transaction codes, or user sessions | No link to Cloud ALM dashboard, event situation details, or SAP system logs for deeper analysis | Generic close notes lacking root cause explanation (license renewal, code fix, transient issue resolution) | No capture of BASIS/ABAP team findings or remediation actions taken","No structured alert payload to enable automatic ticket enrichment with SAP system details | Missing threshold context prevents automated severity adjustment or auto-closure of transient spikes | Lack of correlation IDs blocks automatic linking to related incidents or change records | No actionable runbook links or recommended remediation steps for common issues (license renewal, dump analysis) | Alert URL present but not consistently captured; direct integration to Cloud ALM event situation missing | No structured data for automatic escalation to BASIS team or triggering of SAP-specific diagnostic jobs","Mandate SAP-specific fields: System ID (SID), Client, Instance Number, Application Server hostname in all Cloud ALM alerts | Require metric context: actual value, threshold, measurement period, and unit (e.g., '47 short dumps in last hour, threshold: 10') | Enforce correlation ID schema: Cloud ALM Event Situation ID, SAP Correlation ID, and link to originating alert/event | Include direct URLs: Cloud ALM event situation deep link, SAP system monitoring dashboard, relevant ST22/SM21 transaction links | Add alert payload section: severity reason, impacted business processes, alert policy name, and trigger conditions | Standardize close notes template: root cause category, resolution action, preventive measures, and knowledge article reference | Implement structured work notes: require BASIS team findings, ABAP dump analysis results, and resolution validation in tagged fields","**ALERT: [Cloud ALM for Operations]**
-**System:** {{SAP_SID}} | **Client:** {{CLIENT}} | **Instance:** {{INSTANCE_NUMBER}} | **Host:** {{APP_SERVER_HOSTNAME}}
-**Severity:** {{SEVERITY}} | **Alert Type:** {{ALERT_TYPE}}
-**Issue:** {{ISSUE_DESCRIPTION}}
+Segment_ID,Assignment_Group,Platform,System_Area,Quality_Bucket,Incident_Count,Average_Log_Fidelity_Score,Average_MTTR_Minutes,Representative_Incident_IDs,Top_Missing_Signals,Segment_Assessment,RCA_Gaps,Automation_Gaps,Logging_Standard_Changes,Improved_Log_Template,Expected_MTTR_Impact
+ERP SAP CORE Monitoring/Triage Team,ERP SAP CORE Monitoring/Triage Team,"SAP Cloud ALM, New Relic","ERP SAP Core, Integration","Needs Improvement, Excellent, Good, Poor",2713,60.4,719.88,"INC5990857, INC5898345, INC5898348, INC6172885, INC5785407","root cause analysis in close notes: 2614 | direct alert, trace, issue, or dashboard URL: 2456 | impacted host, pod, instance, CI, or SAP component: 2033 | error code, alert code, exception, or failed transaction identifier: 1582 | action taken, workaround, validation result, or permanent fix: 1171 | metric value, threshold, or trigger condition: 850 | correlation ID, issue ID, trace ID, or request ID: 850 | payload, alert policy, workflow, trigger, or additional attributes: 850","This segment represents 2,713 SAP Cloud ALM incidents managed by the ERP SAP CORE Monitoring/Triage Team with an average quality score of 60.4 and MTTR of ~12 hours. The incidents exhibit a systemic pattern of minimal documentation: 96% lack root cause analysis, 91% missing direct alert URLs, 75% without impacted component identification, and 58% lacking error codes. Close notes are consistently vague ('System is working fine', '3-Strike Rule', 'Alert closed from CALM') with no remediation details. The high MTTR combined with poor documentation suggests incidents are being closed procedurally rather than resolved with understanding, creating knowledge loss and repeat investigation overhead.","No root cause documented in 96% of incidents - close notes contain only status statements without analysis | Missing correlation between alert trigger conditions and actual system behavior or business impact | No distinction between self-resolved alerts, false positives, and genuine issues requiring intervention | Lack of historical context or reference to previous similar incidents (e.g., recurring filesystem or license alerts) | No documentation of why '3-Strike Rule' closure was appropriate or what validation occurred","Alert URLs exist ('Click here to view this alert') but are not captured as structured fields for automated lookup | No machine-readable error codes or alert IDs to enable automated correlation or runbook triggering | Missing threshold values and actual metric readings prevent automated threshold tuning or anomaly detection | Impacted SAP components (system IDs visible like P1C010, MSP700) not extracted as structured fields for auto-routing | No structured validation checkpoints that could be automated (e.g., filesystem capacity checks, license expiry dates) | Lack of correlation IDs prevents linking related alerts or building incident clustering automation","Mandate SAP_SYSTEM_ID, SAP_CLIENT, and SAP_COMPONENT as required structured fields extracted from service name | Require ALERT_URL as a mandatory hyperlink field (not buried in work notes) with direct Cloud ALM alert reference | Enforce METRIC_NAME, METRIC_VALUE, THRESHOLD_VALUE, and THRESHOLD_DIRECTION as structured numeric fields for all performance/capacity alerts | Add CLOUD_ALM_ALERT_ID and CLOUD_ALM_SITUATION_ID as mandatory correlation identifiers | Require RESOLUTION_CATEGORY enum (Auto-Resolved, False-Positive, Workaround-Applied, Permanent-Fix, Escalated) instead of free-text close notes | Mandate ROOT_CAUSE_SUMMARY (min 50 chars) and REMEDIATION_ACTIONS (structured list) in close notes template | Add VALIDATION_PERFORMED field with checkboxes (System-Check-OK, Metrics-Normal, User-Impact-Verified, None) to replace vague confirmations | Include ALERT_RECURRENCE_COUNT and LAST_OCCURRENCE_DATE to track repeat incidents","{'incident_header': {'alert_source': 'SAP Cloud ALM', 'cloud_alm_alert_url': '[REQUIRED: Direct hyperlink]', 'cloud_alm_alert_id': '[REQUIRED: Alert UUID]', 'cloud_alm_situation_id': '[Situation/correlation ID if available]'}, 'impacted_system': {'sap_system_id': '[REQUIRED: e.g., P1C010, MSP700]', 'sap_component': '[REQUIRED: e.g., ABAP, S/4HANA, NetWeaver]', 'sap_client': '[Client number if applicable]', 'host_fqdn': '[Server hostname]', 'instance_number': '[SAP instance]'}, 'alert_details': {'alert_type': '[e.g., ABAP Response Time, Filesystem Full, Expired License]', 'metric_name': '[e.g., avg_response_time_ms, filesystem_usage_pct]', 'metric_value': '[Actual value that triggered alert]', 'threshold_value': '[Configured threshold]', 'threshold_condition': '[e.g., >, <, =]', 'severity': '[ERROR, WARNING, CRITICAL]', 'alert_timestamp': '[ISO8601 format]', 'recurrence_count': '[Number of times this alert fired in past 30 days]'}, 'investigation': {'validation_performed': '[REQUIRED checklist: System health check, Metric verification, Business impact assessment, Historical comparison]', 'error_codes': '[SAP error codes, dump IDs, or transaction codes involved]', 'related_incidents': '[INC numbers of similar recent issues]'}, 'resolution': {'resolution_category': '[REQUIRED enum: Auto-Resolved | False-Positive | Workaround-Applied | Permanent-Fix | Escalated]', 'root_cause_summary': '[REQUIRED min 50 chars: What caused the alert condition]', 'remediation_actions': ['[Action 1 with timestamp]', '[Action 2 with result]'], 'validation_result': '[Post-fix metric values or confirmation method]', 'preventive_measure': ""[Changes to prevent recurrence, or 'None' with justification]""}}","Implementing these logging standards is expected to reduce MTTR by 40-60% (from 12 hours to 5-7 hours) by eliminating repetitive information gathering, enabling direct alert navigation, providing structured root cause history for pattern recognition, and creating automation-ready data for common scenarios like filesystem alerts and license expiry. The mandatory validation and remediation fields will prevent premature closure and build a searchable knowledge base for the 2,713+ similar incidents."
+ERP SAP CORE BTP Team,ERP SAP CORE BTP Team,New Relic,BTP,"Needs Improvement, Good, Excellent",331,59.48,2682.02,"INC6167191, INC5884129, INC6185895, INC6081868, INC5795684","root cause analysis in close notes: 331 | direct alert, trace, issue, or dashboard URL: 329 | error code, alert code, exception, or failed transaction identifier: 319 | action taken, workaround, validation result, or permanent fix: 274 | impacted host, pod, instance, CI, or SAP component: 241","This segment represents 331 incidents from the ERP SAP CORE BTP Team monitoring BTP microservices via New Relic, with an average MTTR of 44.7 hours and quality score of 59.48. The incidents follow a repetitive pattern: performance threshold breaches (high response time or heap memory utilization) that are consistently closed with boilerplate explanations attributing behavior to expected load variance and auto-scaling (hyper scaler). Critical gaps include missing New Relic issue URLs, absent specific error codes or transaction IDs, no infrastructure identifiers (pods/instances), and generic close notes lacking true root cause analysis or validation evidence. The team treats these as noise rather than actionable signals, resulting in prolonged incident lifecycles and missed automation opportunities.",No root cause differentiation between legitimate load spikes versus performance degradation or resource leaks | Missing correlation between alert threshold breaches and actual business impact or user complaints | No analysis of why auto-scaling (hyper scaler) did not prevent threshold breach if infrastructure is self-managing | Absence of trending data showing whether incidents are increasing in frequency or severity over time | No investigation into whether alert thresholds are appropriately tuned for expected load patterns | Missing validation that services returned to normal performance after auto-scaling actions,"No automatic enrichment with New Relic issue URL, dashboard links, or direct trace links for investigation | Missing automatic attachment of current and historical resource utilization metrics (CPU, memory, request rate) | No automated correlation with deployment events, configuration changes, or upstream service dependencies | Absence of auto-classification logic to distinguish expected load variance from anomalous performance degradation | No automatic validation checks confirming service recovery and performance normalization before closure | Missing auto-suppression rules for known expected behavior patterns during peak load windows | No automatic escalation when same microservice repeatedly breaches thresholds within short time windows","Mandate New Relic issue URL in standardized format: 'New Relic Issue URL: https://one.newrelic.com/issue/{issue_id}' in description | Require New Relic dashboard URL for impacted microservice: 'Dashboard: https://one.newrelic.com/...' in description | Capture specific microservice identifier as structured field: 'Impacted Microservice: {service_name}' | Include pod/instance/container identifiers: 'Impacted Infrastructure: [pod-xyz, instance-abc]' | Add structured performance metrics: 'Threshold: {value} | Actual: {value} | Duration: {minutes}min | Baseline: {value}' | Require transaction/trace IDs for performance incidents: 'Sample Transaction IDs: [id1, id2, id3]' | Mandate structured validation in close notes: 'Validation: [Current Response Time: {value}ms | Memory Utilization: {value}% | Auto-scaling Action: {pods scaled from X to Y}]' | Replace boilerplate with decision tree: 'RCA Category: [Expected Load Spike | Threshold Tuning Needed | Performance Degradation | Resource Leak] | Evidence: {specific data}'","**INCIDENT DESCRIPTION**
+Alert: {alert_condition_name}
+Microservice: {service_name}
+Metric Breach: {metric_name} | Threshold: {threshold_value} | Actual: {actual_value} | Duration: {duration_minutes}min
+New Relic Issue: https://one.newrelic.com/issue/{issue_id}
+Dashboard: https://one.newrelic.com/dashboards/{dashboard_id}
+Sample Transactions: {transaction_ids}
 
-**Metrics:**
-- Current Value: {{METRIC_VALUE}} {{UNIT}}
-- Threshold: {{THRESHOLD}} {{UNIT}}
-- Measurement Period: {{TIME_WINDOW}}
-- Trend: {{TREND_DIRECTION}}
+**INFRASTRUCTURE CONTEXT**
+Impacted Pods/Instances: {pod_instance_list}
+Current Replica Count: {replica_count}
+Auto-scaling Status: {scaling_status}
+Recent Deployments: {deployment_events_last_24h}
 
-**Context:**
-- Event Situation ID: {{CALM_EVENT_ID}}
-- SAP Correlation ID: {{SAP_CORRELATION_ID}}
-- Impacted Component: {{COMPONENT_NAME}}
-- Business Impact: {{BUSINESS_PROCESS_AFFECTED}}
+**PERFORMANCE BASELINE**
+Baseline (7-day avg): {baseline_value}
+Previous Hour Avg: {previous_hour_value}
+Concurrent Users/Load: {load_metric}
 
-**Links:**
-- Cloud ALM Event: {{CALM_EVENT_URL}}
-- System Dashboard: {{SAP_DASHBOARD_URL}}
-- Transaction Access: {{TRANSACTION_CODE_LINK}}
+**INVESTIGATION & RESOLUTION**
+RCA Category: [Expected Load Spike | Threshold Tuning Needed | Performance Degradation | Resource Leak]
+Evidence: {specific_metrics_or_logs}
+Action Taken: {specific_action_or_none}
+Validation: Current {metric_name}: {current_value} at {timestamp} | Auto-scaling Result: {scaling_action_taken}
+Permanent Fix Required: [Yes/No] | Follow-up Ticket: {ticket_id}","These changes can reduce MTTR from 44.7 hours to under 2 hours by enabling immediate one-click access to New Relic traces and dashboards, eliminating manual URL hunting (saving ~30 min), providing auto-enriched context that prevents redundant data gathering (saving ~2-4 hours), and establishing clear RCA categories with validation requirements that prevent premature closure and re-opens. Auto-suppression of expected load patterns could eliminate up to 60% of these incidents entirely, while automated threshold tuning recommendations would address the root cause of alert noise."
+ERP SAP CORE Source To Pay Team,ERP SAP CORE Source To Pay Team,New Relic,Source To Pay,"Good, Needs Improvement, Excellent",109,70.46,3776.09,"INC5739206, INC5891334, INC5881505, INC5829817, INC5802093","impacted host, pod, instance, CI, or SAP component: 109 | direct alert, trace, issue, or dashboard URL: 108 | error code, alert code, exception, or failed transaction identifier: 86 | action taken, workaround, validation result, or permanent fix: 54","This segment represents 109 SAP Source-to-Pay IDoc failure incidents from New Relic with an average MTTR of 3776 minutes (2.6 days). All incidents share identical structural deficiencies: they lack specific infrastructure identifiers (host/pod/SAP component), contain no direct URLs to New Relic dashboards or traces, rarely include IDoc error codes or transaction IDs, and provide minimal resolution documentation. The incidents follow a generic template that reports IDoc failures without actionable diagnostic context, forcing engineers to manually query New Relic, navigate SAP transaction codes, and reconstruct the failure chain from scratch. Close notes are automated and non-descriptive ('The issue in New Relic was CLOSED'), providing no knowledge transfer for future incidents.","Missing specific IDoc number, IDoc type, and message type that failed | No SAP system ID (SID), client number, or logical system identifier | Absent SAP error message number (e.g., E_IDOC_STATUS_RECORDS_EMPTY) or status code (51, 56, 64, etc.) | No partner profile, port definition, or RFC destination context | Missing New Relic entity GUID, alert condition ID, or NRQL query that triggered the alert | No correlation to upstream/downstream transaction failures or business process impact | Lack of IDoc direction indicator (inbound vs outbound) and source/target system","No structured IDoc failure data to enable automated retry or reprocessing via WE19/BD87 | Missing threshold context (e.g., '5 IDocs failed in 10 minutes') to distinguish noise from critical failures | Absent correlation IDs linking New Relic incidents to SAP SM21, ST22, or application logs | No machine-readable severity indicators beyond generic 'Critical' label | Missing remediation runbook links or automated recovery workflow triggers | No business context (PO numbers, vendor IDs, material documents) to assess impact automatically | Lack of historical pattern data (e.g., 'similar failure occurred 3 times this week') to prioritize investigation","Add mandatory 'idoc_details' object containing: idoc_number, idoc_type, message_type, direction, status_code, and partner_number | Include 'sap_context' object with: system_id, client, logical_system, transaction_code, and program_name | Embed 'new_relic_links' object with: issue_url (direct link to Issue page), entity_permalink, alert_condition_url, and nrql_query_url | Capture 'error_identifiers' array containing: sap_message_number, sap_message_text, exception_class, and failed_function_module | Add 'infrastructure_context' with: application_server, instance_number, work_process_id, and pod/container_id if applicable | Include 'resolution_data' object in close notes with: root_cause_category, actions_taken_list, validation_steps, and prevention_recommendations | Append 'business_impact' section with: affected_transaction_count, impacted_entities_list, and estimated_business_delay","**New Relic Alert: SAP IDoc Failure Detected**
 
-**Alert Policy:** {{POLICY_NAME}} | **Trigger Condition:** {{TRIGGER_LOGIC}}
-**Recommended Action:** {{RUNBOOK_LINK}}
+**IDoc Details:**
+- IDoc Number: {{idoc_number}}
+- IDoc Type: {{idoc_type}} | Message Type: {{message_type}}
+- Direction: {{direction}} | Status: {{status_code}} ({{status_text}})
+- Partner: {{partner_number}} | Port: {{port_name}}
 
----
-**RESOLUTION (Required at closure):**
-- Root Cause: {{RCA_CATEGORY}} - {{RCA_DETAILS}}
-- Resolution Action: {{RESOLUTION_STEPS}}
-- Validated By: {{RESOLVER_TEAM}} on {{VALIDATION_TIMESTAMP}}
-- Prevention: {{PREVENTIVE_MEASURE}}
-- KB Article: {{KB_LINK}}","These logging improvements are expected to reduce MTTR by 60-70% (from 28 hours to 8-10 hours) by eliminating initial context-gathering phases, enabling direct navigation to SAP system diagnostics, providing BASIS teams with immediately actionable data, and supporting automated ticket enrichment and routing. Structured close notes will build a knowledge base for future auto-remediation of recurring license and short dump scenarios."
-New Relic | BTP | Needs Improvement,New Relic,BTP,Needs Improvement,270,56.82,2959.06,"INC6167191, INC5884129, INC6185895, INC6081868, INC5795684","direct alert, trace, issue, or dashboard URL: 270 | root cause analysis in close notes: 270 | action taken, workaround, validation result, or permanent fix: 270 | error code, alert code, exception, or failed transaction identifier: 265 | impacted host, pod, instance, CI, or SAP component: 194","This segment represents 270 BTP microservice performance incidents from New Relic with an average MTTR of ~49 hours. All incidents lack fundamental diagnostic signals: no direct alert URLs, no root cause analysis, no specific error codes, and missing host/pod identifiers in 72% of cases. The close notes consistently cite 'expected behavior' due to load variations and hyper-scaler auto-scaling, suggesting these are false positives or threshold misconfigurations rather than actionable incidents. The pattern indicates alert fatigue from performance monitoring without contextual enrichment or automated validation against baseline behavior.",No distinction between expected load-driven performance degradation versus actual anomalies requiring intervention | Missing correlation between alert thresholds and current auto-scaling state or capacity headroom | No historical baseline or percentile context to determine if response time/memory usage is truly abnormal | Lack of downstream impact analysis - no evidence of user-facing errors or SLA breaches | No trace IDs or transaction samples linking performance metrics to specific failed operations,No auto-enrichment of New Relic Issue IDs with direct dashboard/trace URLs | Missing automatic retrieval of impacted pod/container names and resource utilization trends | No automated check against hyper-scaler scaling events or capacity thresholds before ticket creation | Lack of auto-resolution logic when alert self-clears within expected auto-scaling response time | No integration to query New Relic for error rate correlation - performance alerts not validated against actual failure metrics | Missing automated baselining to suppress alerts within normal operating variance,"Mandate New Relic Issue URL in format: https://one.newrelic.com/launcher/nr1-core.explorer?pane=eyJuZXJkbGV0SWQiOiJucjEtY29yZS5saXN0aW5nIn0=&sidebars[0]=eyJuZXJkbGV0SWQiOiJucjEtY29yZS5jYXRlZ29yaWVzIn0=&platform[accountId]={account}&platform[$isFallbackTimeRange]=false&platform[timeRange][duration]=1800000 | Require impacted entity details: service name, pod/container ID, namespace, and host identifier from New Relic entity metadata | Include New Relic query result values with threshold context (e.g., 'Response time: 3200ms, Threshold: 3000ms, 95th percentile last 7d: 2800ms') | Add auto-scaling context: current replica count, CPU/memory requests vs limits, recent scaling events in past 30 minutes | Capture error rate and Apdex score alongside performance metrics to validate user impact | Embed transaction trace sample URLs (top 3 slowest) when response time alerts fire | Document alert suppression criteria: 'Auto-close if alert clears within {X} minutes AND error rate <{Y}% AND no scaling ceiling reached' | Require structured close notes with fields: root_cause_category (load_variation|resource_constraint|code_issue|external_dependency), scaling_action_taken (none|manual_scale|threshold_adjusted), prevention_measure","{'incident_source': 'New Relic', 'alert_metadata': {'issue_id': '{New Relic Issue UUID}', 'issue_url': 'https://one.newrelic.com/redirect/entity/{entity_guid}', 'alert_policy': '{policy_name}', 'condition_name': '{condition_name}', 'priority': '{priority}', 'opened_at': '{ISO8601 timestamp}', 'duration_minutes': '{duration}'}, 'impacted_service': {'service_name': '{microservice_name}', 'entity_guid': '{New Relic entity GUID}', 'namespace': '{k8s_namespace}', 'pod_names': ['{pod-1}', '{pod-2}'], 'host_identifiers': ['{host-1}', '{host-2}']}, 'performance_metrics': {'metric_type': 'response_time|heap_memory|cpu_utilization', 'current_value': '{value with unit}', 'threshold_breached': '{threshold with unit}', 'baseline_p95_7d': '{7-day 95th percentile}', 'deviation_percentage': '{calculated deviation}', 'sample_transaction_traces': ['{trace_url_1}', '{trace_url_2}', '{trace_url_3}']}, 'impact_validation': {'error_rate_percent': '{error_rate during incident}', 'apdex_score': '{apdex during incident}', 'affected_endpoints': ['{endpoint_1}', '{endpoint_2}'], 'user_impact_detected': 'true|false'}, 'auto_scaling_context': {'current_replicas': '{count}', 'max_replicas': '{count}', 'cpu_utilization_percent': '{value}', 'memory_utilization_percent': '{value}', 'recent_scaling_events': ['{timestamp: action}'], 'scaling_ceiling_reached': 'true|false'}, 'resolution': {'root_cause_category': 'expected_load_variation|resource_constraint|code_inefficiency|external_dependency_latency|configuration_issue', 'root_cause_detail': '{detailed explanation}', 'action_taken': 'none_expected_behavior|threshold_adjusted|manual_scaling|code_fix|dependency_escalation', 'validation_method': '{how resolution was confirmed}', 'prevention_measure': '{threshold tuning|auto-scaling config|code optimization|N/A}'}}","These changes should reduce MTTR from 49 hours to under 30 minutes for true incidents by enabling immediate triage with direct URLs and contextual metrics, while auto-closing 70-80% of load-variation false positives within 15 minutes through baseline validation and auto-scaling correlation, eliminating unnecessary investigation cycles."
-New Relic | Source To Pay | Needs Improvement,New Relic,Source To Pay,Needs Improvement,50,61.17,3786.77,"INC5739206, INC5891334, INC5881505, INC5829817, INC5802093","impacted host, pod, instance, CI, or SAP component: 50 | error code, alert code, exception, or failed transaction identifier: 50 | direct alert, trace, issue, or dashboard URL: 50 | action taken, workaround, validation result, or permanent fix: 50","This segment represents 50 New Relic incidents related to SAP Source-to-Pay IDoc failures in Production, all scoring identically at 61.17 with an average MTTR of 63 hours. The incidents are generated by automated New Relic alerts detecting IDoc processing failures but lack critical diagnostic context. Every incident is missing the same four signals: specific infrastructure identifiers (host/pod/SAP component), error codes or transaction IDs, direct URLs to New Relic dashboards/traces, and documented resolution actions. The generic alert descriptions provide high-level context but no actionable technical details, forcing responders to manually investigate in SAP and New Relic systems. Work notes show only incident aggregation counts without diagnostic findings, and close notes are automated template responses with no knowledge capture.","No IDoc number, IDoc type, or message type captured in alerts | Missing SAP error status codes (51, 56, 64, etc.) and error messages from IDoc processing | No identification of source system, partner profile, or logical system involved | Absent SAP transaction codes (WE02, WE05, BD87) or specific error locations within IDoc segments | No correlation to underlying SAP application errors (material master issues, vendor blocks, authorization failures) | Missing temporal patterns: whether failures are isolated, recurring, or batch-related | No distinction between transient vs. persistent failures requiring different remediation approaches","No automated retrieval of IDoc details from SAP using RFC or API calls | Missing automated reprocessing triggers for transient errors (BD87 execution) | No self-service dashboard links for support teams to view IDoc error details without SAP GUI access | Absent automated correlation between New Relic NRQL query results and specific SAP IDoc numbers | No automated enrichment with recent change history (transports, configuration changes) in SAP | Missing runbook links or decision trees for common IDoc failure patterns | No automated status validation after IDoc reprocessing to confirm resolution","Mandate inclusion of specific IDoc numbers from New Relic query results in alert payload (extract from NRQL result set) | Require SAP system ID (SID), client number, and environment designation in all STP alerts | Include direct New Relic issue URL using Issue ID already present (format: https://one.newrelic.com/issues/{issue_id}) | Capture and include SAP IDoc status code and status text in alert metadata via NRQL query enhancement | Add IDoc message type, direction (inbound/outbound), and partner information to alert payload | Require NRQL query to return top 5 failed IDoc numbers with timestamps, not just count >= 1 | Include link to pre-filtered SAP transaction (WE02/WE05) or custom dashboard showing failed IDocs | Mandate structured resolution section in close notes: root cause category, IDoc numbers resolved, validation method, and preventive actions | Add alert condition to distinguish between single vs. bulk IDoc failures with different severity thresholds | Include recent trend data: failure count over last 1h, 24h, 7d to identify anomalies vs. chronic issues","{'alert_title': 'SAP STP IDoc Failure: {idoc_message_type} - {entity_name}', 'priority': 'Critical', 'description': {'summary': 'Core STP IDoc failures detected in Production environment', 'failed_idoc_count': '{query_result_value}', 'affected_process': '{entity_name}', 'sap_system': 'PRD / Client: 100 / SID: P01', 'failure_window': '{event_timestamp} to {current_timestamp}'}, 'failed_idocs': [{'idoc_number': '{idoc_num_1}', 'idoc_type': '{idoc_type}', 'message_type': '{message_type}', 'status_code': '{status}', 'status_text': '{status_description}', 'direction': 'inbound|outbound', 'partner': '{partner_number}', 'error_timestamp': '{created_at}'}], 'investigation_links': {'new_relic_issue': 'https://one.newrelic.com/issues/{issue_id}', 'new_relic_dashboard': 'https://one.newrelic.com/dashboards/{dashboard_id}?filter=idoc_status:error', 'sap_idoc_monitor': 'Launch WE02 with IDoc numbers: {comma_separated_idoc_list}', 'runbook': 'https://wiki.company.com/sap-idoc-troubleshooting#{message_type}'}, 'alert_metadata': {'alert_policy': '{policy_name}', 'alert_condition': '{condition_name}', 'nrql_query': '{query_text}', 'issue_id': '{issue_id}', 'trend_analysis': '1h: {count_1h} | 24h: {count_24h} | 7d: {count_7d}'}, 'resolution_template': {'root_cause_category': '[Data Issue|Configuration|Authorization|System Unavailable|Other]', 'affected_idoc_numbers': '[List of IDoc numbers]', 'error_codes_resolved': '[SAP status codes]', 'remediation_action': '[Describe fix: reprocessed via BD87, corrected master data, adjusted partner profile, etc.]', 'validation_method': '[Verified in WE02, confirmed in target system, business user validation]', 'preventive_measures': '[Configuration change, monitoring enhancement, process improvement]', 'resolved_timestamp': '{timestamp}'}}","These logging improvements are expected to reduce MTTR from 63 hours to under 2 hours (97% reduction) by eliminating manual SAP system investigation, providing direct access to failed IDoc details, enabling immediate reprocessing of transient errors, and creating searchable resolution patterns. Direct links and specific IDoc numbers allow L1 support to triage and resolve common failures without SAP expertise, while structured close notes build organizational knowledge for faster resolution of recurring patterns."
-New Relic | Record To Report | Needs Improvement,New Relic,Record To Report,Needs Improvement,37,61.17,2360.47,"INC5853290, INC5989820, INC5790030, INC5932722, INC5977698","impacted host, pod, instance, CI, or SAP component: 37 | error code, alert code, exception, or failed transaction identifier: 37 | direct alert, trace, issue, or dashboard URL: 37 | action taken, workaround, validation result, or permanent fix: 37","This segment represents 37 New Relic incidents related to SAP Core RTR (Record to Report) IDoc failures in Production, all with identical missing signals and an average MTTR of 2.36 days. The incidents are auto-generated from New Relic alerts but lack critical diagnostic context. While the alert identifies 'Replication of Currency Rates' as an impacted entity and references a query threshold (>= 1.0), it fails to provide actionable technical details such as specific IDoc numbers, error codes, SAP system identifiers, or direct investigation URLs. The work notes show only automated updates tracking incident counts, with no evidence of human investigation steps. The generic close note ('The issue in New Relic was CLOSED') suggests incidents may be auto-resolving without root cause understanding, creating a pattern of blind acceptance rather than true resolution.","No specific IDoc numbers, document IDs, or transaction identifiers to trace failed records | Missing SAP error codes, message types, or RFC return codes that indicate failure reason | No SAP system ID (SID), client number, or integration layer details to pinpoint environment | Absent correlation between 'Replication of Currency Rates' query result and actual business impact | No indication of whether failures are data-related, connectivity-related, or configuration-related | Missing timestamp of first IDoc failure versus alert trigger time to understand detection lag | No reference to SAP transaction codes (SM58, WE02, WE05) or monitoring tools used for investigation","No automated retrieval of failed IDoc details from SAP (status, error message, partner profile) | Missing automatic enrichment with recent deployment changes or configuration modifications in SAP landscape | No self-service runbook links or automated diagnostic queries embedded in alert payload | Absent automated comparison of current failure rate against historical baseline to determine severity | No automatic validation of SAP connectivity, RFC destinations, or integration middleware health | Missing automated correlation with related alerts (network, authentication, SAP BASIS) to identify cascading issues | No automated notification to SAP Basis or integration team with pre-filtered context","Add 'impacted_idoc_numbers' array field containing specific IDoc document numbers from query results | Include 'sap_system_details' object with SID, client, logical system name, and integration server hostname | Embed 'error_details' object containing SAP status code, status text, and IDoc message type | Add 'new_relic_issue_url' field with direct clickable link to New Relic issue (using Issue ID) | Include 'sap_transaction_links' with deep links to WE02/WE05 filtered by time window and message type | Add 'failure_metrics' object with count, first_failure_time, last_failure_time, and failure_rate_change_percent | Include 'investigation_runbook_url' pointing to specific RTR IDoc troubleshooting procedure | Add 'automated_diagnostics' object with results of pre-executed health checks (connectivity, queue depth, partner status) | Include 'business_impact_estimate' field indicating affected currency pairs, transaction volume, or financial processes | Add 'resolution_actions' array in work notes capturing specific steps taken (IDoc reprocessed, config changed, etc.)","New Relic Alert: SAP Core RTR IDoc Failures Detected
+**SAP Context:**
+- System: {{sap_sid}}/{{client}} | Logical System: {{logical_system}}
+- Transaction: {{transaction_code}} | Program: {{program_name}}
+- App Server: {{application_server}} | Instance: {{instance_number}}
 
-[ALERT SUMMARY]
-Issue ID: {{issue_id}}
-Issue URL: https://one.newrelic.com/issues/{{issue_id}}
-Priority: {{priority}}
-Alert Policy: {{alert_policy_name}}
-Condition: {{alert_condition_name}}
-Triggered: {{timestamp}}
+**Error Details:**
+- SAP Message: {{message_number}} - {{message_text}}
+- Exception: {{exception_class}} | Failed Module: {{function_module}}
+- Segment: {{failed_segment}} | Field: {{failed_field}}
 
-[SAP ENVIRONMENT]
-System: {{sap_sid}} (Client: {{sap_client}})
-Logical System: {{logical_system_name}}
-Integration Server: {{integration_host}}
-Environment: Production
-
-[FAILURE DETAILS]
-Impacted IDoc Types: {{idoc_message_types}}
-Failed IDoc Count: {{failed_idoc_count}}
-Failed IDoc Numbers: {{idoc_numbers_csv}}
-First Failure: {{first_failure_timestamp}}
-Last Failure: {{last_failure_timestamp}}
-Primary Error Code: {{sap_status_code}} - {{sap_status_text}}
-Query Result Value: {{query_result_value}} (Threshold: >= 1.0)
-
-[BUSINESS IMPACT]
-Impacted Process: {{impacted_entities}}
-Affected Data: {{business_context}} (e.g., Currency Rates for period {{period}})
-Estimated Transaction Volume: {{estimated_volume}}
-
-[INVESTIGATION LINKS]
-- SAP IDoc Monitor (WE02): {{sap_we02_deeplink}}
-- SAP IDoc List (WE05): {{sap_we05_deeplink}}
-- New Relic Dashboard: {{dashboard_url}}
-- Runbook: {{runbook_url}}
-
-[AUTOMATED DIAGNOSTICS]
-SAP RFC Connection: {{rfc_connection_status}}
-Partner Profile Status: {{partner_profile_status}}
-IDoc Queue Depth: {{queue_depth}}
-Recent Config Changes: {{recent_changes_summary}}
-
-[RECOMMENDED ACTIONS]
-1. Review failed IDocs in WE02 using provided link
-2. Check SAP error details: {{primary_error_guidance}}
-3. Validate partner configuration if status code indicates comm failure
-4. Reprocess IDocs after resolving root cause
-5. Verify currency rates replicated successfully post-fix
-
-[RESOLUTION TRACKING]
-Action Taken: {{resolution_action}}
-Validation Result: {{validation_outcome}}
-IDocs Reprocessed: {{reprocessed_idoc_numbers}}
-Permanent Fix: {{permanent_fix_description}}","These logging improvements are expected to reduce MTTR from 2.36 days to under 4 hours by eliminating the need for manual SAP system login to gather basic diagnostic context, providing direct navigation to failed IDocs, enabling immediate error code interpretation, and supporting automated triage through pre-executed health checks. The inclusion of specific IDoc numbers and deep links removes 80% of initial investigation time, while embedded runbooks and business context enable faster escalation decisions and reduce back-and-forth communication between monitoring and SAP teams."
-New Relic | Demand To Warehouse | Needs Improvement,New Relic,Demand To Warehouse,Needs Improvement,22,61.17,1165.56,"INC5778065, INC5987000, INC5791094, INC5817464, INC5797603","impacted host, pod, instance, CI, or SAP component: 22 | error code, alert code, exception, or failed transaction identifier: 22 | direct alert, trace, issue, or dashboard URL: 22 | action taken, workaround, validation result, or permanent fix: 22","This segment represents 22 incidents of SAP Core DTW (Demand To Warehouse) IDoc failures detected via New Relic monitoring, with an average MTTR of 19.4 hours. All incidents share identical missing signals and follow a generic template that provides only high-level alert metadata. The alerts indicate IDoc processing failures in Production but lack specific identifiers needed for rapid diagnosis: no IDoc numbers, message types, partner profiles, SAP system IDs, error codes, or transaction details. Work notes show only automated 'INCIDENT ADDED' updates with incident counts, and close notes are uniformly generic. This pattern suggests the New Relic-to-ServiceNow integration passes minimal contextual data, forcing responders to manually query SAP systems to identify which specific IDocs failed and why.","No IDoc document numbers or message types to identify which specific transactions failed | Missing SAP error codes, status codes, or exception messages from IDoc processing logs | No partner profile, logical system, or RFC destination information to isolate integration points | Absence of SAP transaction codes (WE02, WE05, SM58) or tRFC queue details for investigation starting points | No correlation to upstream demand planning systems or downstream warehouse management systems | Missing business context such as material numbers, plant codes, or order references affected by the failure","No programmatic link to SAP IDoc monitoring transactions or error queues for automated retrieval | Missing structured error taxonomy that would enable pattern matching for known failure modes | No baseline metrics (normal IDoc volume, typical failure rate) to distinguish anomalies from routine errors | Absence of automated retry status or reprocessing workflow indicators | No integration with SAP automation tools (e.g., tRFC queue processing, IDoc resubmission scripts) | Missing threshold context to determine if this is a single failure or systemic issue requiring escalation","Enhance New Relic NRQL query to extract and include top 5-10 failed IDoc document numbers from SAP monitoring data | Add SAP system identifier (SID), client number, and environment designation to alert payload | Include IDoc message type (e.g., MATMAS, ORDERS), direction (inbound/outbound), and partner profile in structured fields | Capture and pass SAP status code, error message text, and application log references from IDoc processing | Embed direct URLs to New Relic dashboards, SAP transaction WE02/WE05 deep links (if available), and relevant runbooks | Structure 'Additional Payload' as parseable JSON with separate fields rather than nested description arrays | Add failure count threshold and time window context (e.g., '5 IDocs failed in last 15 minutes, baseline <1/hour') | Include affected business entities: material master records, plants, vendors, or customers impacted | Require resolution notes template with fields for: root cause category, specific IDoc numbers resolved, corrective action, and validation method","**New Relic Alert: SAP Core DTW IDoc Failure**
-
-**Alert Metadata:**
-- Issue ID: {{issue_id}}
+**New Relic Context:**
 - Issue URL: {{new_relic_issue_url}}
-- Priority: {{priority}}
-- Alert Policy: {{alert_policy_name}}
-- Triggered: {{timestamp}}
+- Entity: {{entity_name}} ({{entity_guid}})
+- Alert Condition: {{alert_condition_name}} ({{condition_id}})
+- Query: {{nrql_query}}
+- Threshold: {{threshold_value}} failures in {{time_window}}
 
-**SAP Environment:**
-- System: {{sap_sid}} (Client: {{sap_client}})
-- Environment: {{environment}} (Production/QA/Dev)
-- Integration Flow: {{integration_name}} (Demand To Warehouse)
-
-**Failure Details:**
-- Failed IDoc Count: {{failed_idoc_count}} (Threshold: {{threshold}}, Baseline: {{baseline_rate}})
-- Time Window: {{time_window_minutes}} minutes
-- Failed IDoc Numbers: {{idoc_numbers}} (e.g., 0000000012345678, 0000000012345679)
-- Message Types: {{message_types}} (e.g., MATMAS, DEBMAS)
-- Direction: {{inbound_outbound}}
-- Partner Profile(s): {{partner_profiles}}
-
-**Error Information:**
-- SAP Status Codes: {{status_codes}} (e.g., 51-Application document not posted)
-- Error Messages: {{error_message_summary}}
-- Application Log: {{app_log_reference}}
-
-**Impacted Business Objects:**
-- Entity Type: {{entity_type}} (Material Master, Vendor, Customer)
-- Affected Records: {{affected_record_ids}}
-- Plants/Locations: {{plant_codes}}
+**Business Impact:**
+- Failed Transactions: {{failure_count}} | Time Window: {{time_range}}
+- Affected Process: {{business_process}} | Impacted Documents: {{document_list}}
 
 **Investigation Links:**
 - New Relic Dashboard: {{dashboard_url}}
-- SAP IDoc Monitor: {{sap_we02_deeplink}} (Transaction WE02)
+- SAP IDoc Monitor: Transaction WE02/WE05 with IDoc {{idoc_number}}
 - Runbook: {{runbook_url}}
 
-**Automated Checks:**
-- RFC Connection Status: {{rfc_status}}
-- tRFC Queue Status: {{trfc_queue_status}}
-- Related Incidents (24h): {{related_incident_count}}
+**Resolution (on close):**
+- Root Cause: {{root_cause_summary}}
+- Actions Taken: {{action_list}}
+- Validation: {{validation_result}}
+- Prevention: {{prevention_steps}}","These logging improvements are expected to reduce MTTR by 50-65% (from ~2.6 days to 12-18 hours) by eliminating manual New Relic navigation, providing direct IDoc identifiers for SAP transaction access (WE02/WE05), surfacing error codes that map to known resolution patterns, and enabling automated correlation between monitoring alerts and SAP system logs. Direct URLs and structured error data will particularly accelerate after-hours incident response when senior engineers must triage remotely."
+ERP SAP CORE Record To Report Team,ERP SAP CORE Record To Report Team,New Relic,Record To Report,"Good, Needs Improvement, Excellent",108,71.94,4679.19,"INC5853290, INC5989820, INC5790030, INC5932722, INC5977698","impacted host, pod, instance, CI, or SAP component: 108 | direct alert, trace, issue, or dashboard URL: 108 | error code, alert code, exception, or failed transaction identifier: 96 | action taken, workaround, validation result, or permanent fix: 37","This segment represents 108 SAP Core Record-to-Report IDoc failure incidents originating from New Relic with an average MTTR of 77.99 hours (4679 minutes). All incidents share an identical pattern: generic alert descriptions stating 'Core RTR IDoc failures detected in Production' without specific identifying details. The incidents universally lack impacted SAP components, error codes, direct investigation URLs, and documented resolution actions. Work notes show only automated New Relic status updates ('INCIDENT ADDED/CLOSED') with no human investigation trail. The consistent ~3-4 day MTTR suggests investigators must manually navigate to New Relic, identify specific failed IDocs, determine root causes, and resolve issues without any automated guidance or contextual information in the ticket.","No specific IDoc number, type, or message ID to identify which transaction failed | Missing SAP error status codes (51, 56, 64, etc.) that indicate failure category | No SAP system ID, client, or application component identification | Absent partner/sender information for replication failures | No timestamp correlation between New Relic alert and actual SAP IDoc failure time | Missing query result details despite alert mentioning 'query result >= 1.0' | No investigation steps documented in work notes - only automated status changes | Root cause never captured in close notes - only generic 'issue was CLOSED' statement",No automated retrieval of failed IDoc details from SAP (WE02/WE05 transaction data) | Missing automatic lookup of IDoc error messages and standard SAP resolution procedures | No self-service link to SAP IDoc monitoring dashboard filtered to failed messages | Absent automated correlation with related SAP basis or interface errors | No automatic retry mechanism trigger or suggested remediation workflow | Missing integration to pull SAP partner profile configuration for replication issues | No automated notification to business process owners of specific impacted transactions | Lack of historical pattern analysis for recurring IDoc types or partners,"Add mandatory field: 'sap_idoc_number' - specific IDoc document number(s) triggering alert | Add mandatory field: 'sap_idoc_type' - IDoc type (e.g., FIDCCP02, CREMAS03, FINSTA) | Add mandatory field: 'sap_error_status' - SAP IDoc status code (51, 56, 64, etc.) | Add mandatory field: 'sap_error_message' - actual SAP error text from status record | Add mandatory field: 'sap_system_id' - SAP SID and client (e.g., PRD/100) | Add mandatory field: 'sap_logical_system' - sender/receiver logical system names | Add mandatory field: 'new_relic_issue_url' - direct clickable link to New Relic issue details | Add mandatory field: 'sap_idoc_dashboard_url' - filtered link to SAP IDoc monitoring for this failure | Add recommended field: 'business_process_impacted' - specific RTR process (e.g., Currency Replication, GL Master) | Add required closure field: 'resolution_action' - specific action taken (reprocessed, corrected data, config fix) | Include New Relic query details that triggered alert (actual count, threshold, time window) | Embed automated enrichment from SAP: partner info, message type, creation timestamp","**New Relic Alert: SAP Core RTR IDoc Failure Detected**
 
-**Resolution Tracking (to be completed):**
-- Root Cause Category: [Data Quality | Configuration | Network | Authorization | Other]
-- Specific IDocs Resolved: [List IDoc numbers]
-- Action Taken: [Reprocessed | Data Corrected | Config Updated | Escalated]
-- Validation Method: [Verified in WE02 | Confirmed in Target System | Business User Validation]
-- Permanent Fix: [Yes/No - Description]","These logging enhancements are expected to reduce MTTR by 60-70% (from ~19 hours to 6-8 hours) by eliminating the initial investigation phase where responders must manually query SAP systems to identify failed IDocs, decode error messages, and locate relevant monitoring transactions. Direct links, specific IDoc numbers, and structured error codes enable immediate targeted remediation, while baseline context reduces false-positive investigation time."
-New Relic | Tech & Infra | Needs Improvement,New Relic,Tech & Infra,Needs Improvement,12,53.67,28.84,"INC5894172, INC5804594, INC5804676, INC5862225, INC5846299","impacted host, pod, instance, CI, or SAP component: 12 | error code, alert code, exception, or failed transaction identifier: 12 | direct alert, trace, issue, or dashboard URL: 12 | root cause analysis in close notes: 12 | action taken, workaround, validation result, or permanent fix: 12","This segment represents 12 New Relic incidents related to WebDispatcher response time alerts that consistently lack critical diagnostic context. All incidents share identical missing signals (100% occurrence rate) including impacted infrastructure details, error identifiers, direct URLs, root cause analysis, and remediation actions. The alerts provide only generic condition descriptions and entity names without actionable technical details. Close notes are predominantly auto-generated from New Relic status changes or contain vague validation statements, offering no insight into what caused the issue or how it resolved. This pattern indicates a systematic integration gap between New Relic and incident management where alert payloads are not enriched with investigative context.","No root cause documented in any of the 12 incidents - only auto-closure from New Relic or generic 'services available' statements | Missing correlation between response time threshold breach and underlying infrastructure or application issues | No analysis of whether alerts were transient spikes, sustained degradation, or false positives | Absence of performance metrics (actual response time values, duration of breach, baseline comparison) | No identification of which specific SAP components or backend services caused the web dispatcher delay","New Relic Issue IDs and alert URLs not captured, preventing automated linking to observability data | Missing host/pod/instance identifiers blocks automated health checks and log correlation | No structured error codes or transaction IDs to enable automated pattern detection across incidents | Lack of query result details prevents automated threshold validation and false positive filtering | Close notes lack structured remediation data, preventing playbook generation or auto-remediation learning","Mandate New Relic Issue URL in description using format: 'Issue URL: https://one.newrelic.com/issues/{issue_id}' | Require impacted entity details: hostname/FQDN, pod name, instance ID, and SAP component identifier (e.g., WebDispatcher instance P1C) | Capture alert query result values: threshold, actual value, duration exceeded, and measurement unit | Include direct links to related dashboards, traces, and NRQL queries in structured format | Enforce close notes template requiring: (1) Root cause category, (2) Actual response time observed, (3) Specific action taken or auto-resolution reason, (4) Validation method | Add alert condition ID and policy ID as structured fields for automation correlation | Capture baseline response time and percentage deviation for context","**New Relic Alert: {alert_condition_name}**
+**Alert Details:**
+- New Relic Issue ID: {{issue_id}}
+- Issue URL: {{new_relic_issue_url}}
+- Alert Policy: {{alert_policy_name}}
+- Priority: {{priority}}
+- Detection Time: {{alert_timestamp}}
+
+**SAP IDoc Failure Details:**
+- SAP System: {{sap_system_id}} / Client {{sap_client}}
+- Failed IDoc Number(s): {{sap_idoc_numbers}} (Count: {{failed_idoc_count}})
+- IDoc Type: {{sap_idoc_type}}
+- IDoc Direction: {{direction}} (Inbound/Outbound)
+- Logical System (Sender): {{sender_logical_system}}
+- Logical System (Receiver): {{receiver_logical_system}}
+- SAP Error Status: {{sap_status_code}}
+- SAP Error Message: {{sap_error_text}}
+- Business Process: {{business_process}} (e.g., Currency Rate Replication, GL Account Master)
+
+**Investigation Links:**
+- SAP IDoc Monitor (WE02): {{sap_idoc_monitor_url}}
+- New Relic Dashboard: {{new_relic_dashboard_url}}
+- Related SAP Alerts: {{related_alerts}}
+
+**Alert Condition:**
+- Query: {{nrql_query}}
+- Threshold: {{threshold_value}}
+- Actual Result: {{actual_value}}
+- Time Window: {{evaluation_window}}
+
+**Recommended Actions:**
+{{automated_remediation_steps}}
+
+**Resolution (to be completed):**
+- Root Cause: [Required]
+- Action Taken: [Required - e.g., IDoc reprocessed via BD87, corrected partner profile, fixed master data]
+- Validation: [Required - confirm IDoc status 53/successful posting]
+- Preventive Measure: [If applicable]",Expected 60-75% MTTR reduction (from ~78 hours to ~15-20 hours). Direct SAP IDoc numbers and error codes eliminate manual New Relic-to-SAP correlation effort (estimated 2-4 hours). Embedded investigation URLs and specific error messages enable immediate triage. Automated enrichment with SAP transaction details and recommended actions reduces knowledge dependency. Mandatory resolution documentation prevents recurring investigation of identical issues and enables pattern-based automation for common IDoc failure scenarios.
+ERP SAP CORE Demand To Warehouse Team,ERP SAP CORE Demand To Warehouse Team,New Relic,Demand To Warehouse,"Excellent, Good, Needs Improvement",105,73.84,1604.93,"INC5778065, INC5987000, INC5791094, INC5817464, INC5797603","impacted host, pod, instance, CI, or SAP component: 105 | direct alert, trace, issue, or dashboard URL: 104 | error code, alert code, exception, or failed transaction identifier: 86 | action taken, workaround, validation result, or permanent fix: 27","This segment represents 105 SAP Core Demand-to-Warehouse IDoc failure incidents monitored via New Relic with an average MTTR of 26.7 hours. Despite an average quality score of 73.84, all incidents exhibit a consistent pattern: generic 'Material master query result >= 1.0' alerts that lack specific diagnostic context. Every incident (100%) is missing the impacted SAP component details, nearly all (99%) lack direct investigation URLs, and 82% are missing specific error codes or IDoc identifiers. The incidents auto-close when New Relic issues close, but contain no evidence of root cause investigation, remediation actions, or validation—indicating a monitoring-driven ticketing pattern without meaningful incident resolution documentation.","No specific IDoc number, type, or message type captured to identify which integration flow failed | Missing SAP transaction codes (WE02, WE05, BD87) or error status codes that would pinpoint IDoc failure reasons | No correlation to specific SAP system ID, client, or partner profile involved in the DTW process | Absence of business impact context—which materials, warehouse locations, or order types were affected | No distinction between transient vs. persistent failures or failure categories (configuration, data, connectivity) | Auto-closure based on New Relic status without documented root cause or failure pattern analysis","No automatic extraction of failed IDoc numbers from New Relic query results for direct SAP lookup | Missing enrichment with SAP system health checks or dependent RFC/batch job status | No automated severity classification based on IDoc volume, age of failures, or business criticality | Lack of automatic dashboard/query URL generation linking to specific IDoc failure details in New Relic | No self-service runbook links for common IDoc failure scenarios (partner profile errors, data mapping issues, locked records) | Missing automated correlation with recent SAP transports, configuration changes, or scheduled maintenance windows | No automatic validation that failed IDocs were reprocessed or cleared before incident closure","Mandate inclusion of specific IDoc numbers extracted from New Relic query results in initial alert payload | Require SAP component identifiers: System ID (SID), Client number, Message Type, Partner Profile, and IDoc Direction (Inbound/Outbound) | Embed direct New Relic dashboard URL with pre-filtered query for the specific time window and IDoc failure details | Capture and log SAP status codes (51=Error, 56=IDoc with errors added) and error message text from EDIDS table | Require structured remediation documentation: IDoc reprocessing method (BD87, WE19, manual), validation query, and business confirmation | Add IDoc failure category tags: DATA_MAPPING, PARTNER_CONFIG, CONNECTIVITY, AUTHORIZATION, LOCKED_OBJECT, or UNKNOWN | Include business context fields: affected Material Numbers, Plant/Storage Location codes, and estimated transaction volume impact | Mandate work notes template with investigation steps, SAP transaction codes used, and resolution time breakdown","**New Relic Alert: SAP Core DTW IDoc Failure Detected**
+
+**Issue ID:** {{issue_id}}
+**Priority:** {{priority}}
+**Alert Policy:** {{alert_policy_name}}
+**Detection Time:** {{timestamp}}
+**New Relic Dashboard:** {{dashboard_url}}?filter=IDoc_Status:Error&timeRange={{time_window}}
+
+**SAP Environment Details:**
+- System ID (SID): {{sap_sid}}
+- Client: {{sap_client}}
+- Message Type: {{idoc_message_type}}
+- Partner Profile: {{partner_profile}}
+- IDoc Direction: {{inbound|outbound}}
+
+**Failed IDoc Details:**
+- IDoc Numbers: {{failed_idoc_numbers}} (Total: {{failure_count}})
+- SAP Status Codes: {{status_codes}}
+- Error Messages: {{error_message_text}}
+- Failure Category: {{DATA_MAPPING|PARTNER_CONFIG|CONNECTIVITY|AUTHORIZATION|LOCKED_OBJECT|UNKNOWN}}
+
+**Business Impact:**
+- Affected Materials: {{material_numbers}}
+- Plant/Storage Locations: {{plant_sloc_codes}}
+- Estimated Transaction Volume: {{transaction_count}}
+- Business Process: {{process_name}}
+
+**Investigation Actions Required:**
+1. Review IDoc details in SAP via WE02/WE05 using IDoc numbers above
+2. Check partner profile configuration (WE20) for {{partner_profile}}
+3. Verify connectivity and RFC destinations (SM59) if applicable
+4. Review application logs (SLG1) for related errors
+
+**Resolution Documentation (Required before closure):**
+- Root Cause: {{root_cause_description}}
+- Remediation Method: {{BD87_reprocess|WE19_manual|config_fix|data_correction}}
+- IDocs Reprocessed: {{reprocessed_idoc_list}}
+- Validation Query: {{validation_nrql_or_sap_txn}}
+- Business Confirmation: {{confirmed_by}} at {{confirmation_time}}
+- Permanent Fix Applied: {{yes|no}} - {{fix_description}}","By providing specific IDoc numbers, SAP component context, direct investigation URLs, and structured failure categorization upfront, initial triage time can be reduced by 40-60% (from current 26.7 hours average). Mandatory resolution documentation with reprocessing validation will eliminate premature auto-closures and reduce repeat incidents. Automation-ready data fields enable future self-healing for common failure patterns (estimated 30% of incidents), potentially reducing MTTR to under 8 hours for routine IDoc errors."
+ERP SAP CORE Tech & Infra Team,ERP SAP CORE Tech & Infra Team,New Relic,Tech & Infra,"Needs Improvement, Good",17,57.54,125.22,"INC5894172, INC5804594, INC5804676, INC5862225, INC5846299","impacted host, pod, instance, CI, or SAP component: 17 | root cause analysis in close notes: 17 | action taken, workaround, validation result, or permanent fix: 17 | error code, alert code, exception, or failed transaction identifier: 12 | direct alert, trace, issue, or dashboard URL: 12","This segment represents 17 incidents from the ERP SAP CORE Tech & Infra Team monitoring SAP WebDispatcher response times via New Relic. All incidents share identical missing signals, indicating systematic documentation gaps rather than isolated oversights. The incidents are auto-closed when New Relic issues resolve, with minimal human investigation documented. Close notes lack root cause analysis, specific actions taken, or identification of impacted infrastructure components. The average MTTR of 125 minutes suggests incidents may be resolving automatically or through undocumented manual intervention, but the absence of structured logging prevents pattern recognition, automated remediation, or knowledge transfer.","No distinction between transient performance spikes versus sustained degradation patterns | Missing correlation between response time threshold breach and actual SAP system or network bottlenecks | No analysis of whether alert auto-closure indicates true resolution or monitoring gap | Absence of upstream/downstream dependency impact assessment (database, network, application server load) | No trending data or comparison to baseline performance metrics at time of alert","Alert payload lacks specific SAP WebDispatcher hostname, instance number, or server node identifier for automated remediation targeting | No structured error codes or transaction IDs to enable automated correlation with SAP logs or transaction traces | Missing direct URL links to New Relic dashboards, traces, or alert details prevents automated evidence collection | Close notes don't capture validation steps (response time normalization, service availability checks) in machine-readable format | No standardized severity escalation criteria or auto-remediation action triggers based on duration or threshold multiples","Mandate inclusion of 'impacted_component' field with SAP system ID (SID), WebDispatcher hostname, instance number, and CI identifier in alert payload | Require 'alert_context' section with direct New Relic issue URL, dashboard link, and query permalink for threshold breach | Enforce 'metric_details' object containing actual response time value, threshold exceeded, duration of breach, and baseline comparison | Implement structured 'resolution_data' in close notes with fields: root_cause_category, validation_method, actions_performed, and auto_resolved_flag | Add 'error_identifiers' section for SAP work process dumps, ABAP short dumps, HTTP status codes, or network error codes when available | Require 'impact_scope' field documenting affected user count, business transactions, or SAP modules if determinable","**ALERT DETAILS**
+Alert: {{alert_condition_name}} | Priority: {{priority}} | Issue ID: {{issue_id}}
+New Relic Issue URL: {{issue_url}} | Dashboard: {{dashboard_url}}
+
+**IMPACTED COMPONENT**
+SAP System: {{sap_sid}} | WebDispatcher: {{webdispatcher_host}} | Instance: {{instance_number}}
+Configuration Item: {{ci_name}} | Environment: {{environment}}
+
+**METRIC BREACH**
+Current Response Time: {{current_value}}ms | Threshold: {{threshold_value}}ms | Breach Duration: {{duration_minutes}}min
+Baseline (24h avg): {{baseline_value}}ms | Deviation: {{percent_deviation}}%
+Query: {{nrql_query}}
+
+**CONTEXT**
+Alert Policy: {{alert_policy_name}} | Condition: {{condition_description}}
+Triggered: {{trigger_timestamp}} | Entities: {{impacted_entities}}
+
+**INVESTIGATION FINDINGS**
+Root Cause: {{root_cause}} | Category: {{cause_category}}
+Correlated Events: {{correlated_alerts_or_changes}}
+Impact Scope: {{affected_users_or_transactions}}
+
+**RESOLUTION**
+Actions Taken: {{actions_list}}
+Validation: {{validation_method}} | Result: {{validation_outcome}}
+Auto-Resolved: {{true/false}} | Permanent Fix: {{fix_description_or_none}}
+Closed: {{close_timestamp}} | Duration: {{total_duration_minutes}}min","Implementing these logging standards is expected to reduce MTTR by 40-50% (from 125 to 60-75 minutes) by enabling immediate component identification, eliminating manual URL lookup in New Relic, providing baseline context for faster triage decisions, and creating structured data for automated alert correlation and runbook execution. The improved template will also enable pattern detection across recurring WebDispatcher performance issues for proactive tuning."
+ERP SAP CORE FP&A,ERP SAP CORE FP&A,New Relic,FP&A,Needs Improvement,5,61.17,1471.13,"INC5908668, INC5935729, INC5917281, INC5851926, INC5886393","impacted host, pod, instance, CI, or SAP component: 5 | error code, alert code, exception, or failed transaction identifier: 5 | direct alert, trace, issue, or dashboard URL: 5 | action taken, workaround, validation result, or permanent fix: 5","This segment represents SAP Core BPM IDoc failure alerts for FP&A cost center operations (Create/Change) in Production, all originating from New Relic with consistently poor log fidelity (61.17 score). All 5 incidents share identical missing signals and exhibit extremely high MTTR (~24 hours). The alerts provide generic IDoc failure notifications but lack actionable technical details needed for rapid diagnosis. The pattern shows repetitive incidents for the same business processes without capturing specific IDoc numbers, error codes, SAP transaction details, or host information. Work notes indicate incidents auto-close when New Relic issues close, with minimal documented investigation or remediation steps, suggesting reactive monitoring without root cause resolution.","No specific IDoc document number or IDoc type captured in alerts | Missing SAP error codes, status codes, or message types from IDoc processing | No identification of which SAP system, client, or integration component failed | Absence of BPM workflow identifiers or business process context | No correlation to specific cost center data or transaction payload that triggered failure | Missing upstream/downstream system integration points (source/target systems) | No historical failure pattern data or repeat failure indicators | Lack of business impact assessment (number of cost centers affected, financial data at risk)","No automatic retrieval of IDoc details from SAP transaction codes (WE02, WE05, BD87) | Missing auto-capture of SAP application logs and error message details | No automated validation of BPM workflow status or restart capability | Absence of automatic comparison against successful IDoc processing patterns | No self-service IDoc reprocessing triggers or retry mechanisms | Missing automated notification to data submitters about validation errors | No automatic escalation based on IDoc age or business criticality | Lack of integration with SAP ALE/IDoc monitoring tools for enriched context","Add mandatory IDoc identification fields: IDoc Number, IDoc Type (e.g., COSMAS01, COSMAS02), Direction (Inbound/Outbound) | Include SAP technical identifiers: System ID (SID), Client, Logical System, Partner Profile | Capture specific error details: SAP Message Number, Message Class, Message Text, Status Code (51, 64, etc.) | Add business context fields: Cost Center ID(s), Valid From/To dates, Operation Type (Create/Change), Number of Records | Include BPM workflow details: Process Instance ID, Workflow Step, Integration Scenario Name | Embed direct diagnostic URLs: New Relic Issue permalink, SAP GUI deep-link (WE02 with IDoc number), relevant dashboard URLs | Add host/infrastructure context: Application Server, Integration Server Pod/Instance, Message Queue details | Include resolution guidance: Common validation errors for cost center operations, reprocessing procedures, data correction steps | Capture temporal context: First occurrence timestamp, repeat failure count, last successful processing time | Add impact metrics: Number of failed IDocs in batch, affected entities count, business process SLA status","**New Relic Alert: SAP Core BPM IDoc Failure - {Operation} Cost Center(s)**
 
 **Issue Details:**
-- Issue ID: {issue_id}
-- Issue URL: https://one.newrelic.com/issues/{issue_id}
-- Priority: {priority}
-- Alert Policy: {policy_name} (ID: {policy_id})
-- Condition ID: {condition_id}
+- Issue ID: {issue_id} | [View in New Relic]({new_relic_issue_url})
+- Priority: {priority} | Detected: {timestamp}
 
-**Impacted Infrastructure:**
-- Entity: {entity_name}
-- Hostname/Instance: {hostname}
-- SAP Component: {sap_component_id}
-- Environment: {environment}
+**SAP IDoc Information:**
+- IDoc Number(s): {idoc_numbers} | Type: {idoc_type} | Direction: {direction}
+- Status: {idoc_status_code} - {idoc_status_text}
+- [View IDoc in SAP]({sap_gui_deeplink_we02})
 
-**Performance Metrics:**
-- Threshold: {threshold_value}ms
-- Actual Value: {actual_value}ms
-- Deviation: {percentage_over_threshold}%
-- Baseline: {baseline_value}ms
-- Duration Exceeded: {duration_minutes} minutes
+**Error Details:**
+- SAP Message: {message_class}/{message_number} - {message_text}
+- Error Code: {error_code} | Exception: {exception_type}
 
-**Investigation Links:**
-- Dashboard: {dashboard_url}
-- NRQL Query: {query_url}
-- Related Traces: {trace_url}
+**System Context:**
+- SAP System: {sap_sid} | Client: {client} | Logical System: {logical_system}
+- Application Server: {app_server_host} | Integration Pod: {bpm_pod_instance}
+- Partner Profile: {partner_profile} | Port: {port_name}
 
-**Work Notes:** {investigation_steps}
+**Business Impact:**
+- Operation: {operation_type} (Create/Change/Delete)
+- Cost Center(s) Affected: {cost_center_ids} | Count: {record_count}
+- Valid From Date Issue: {valid_from_date} (must be current year: {current_year})
+- BPM Workflow: {workflow_name} | Process Instance: {process_instance_id}
 
-**Resolution:**
-- Root Cause: {root_cause_category} - {detailed_explanation}
-- Action Taken: {specific_action_or_auto_resolution}
-- Validation: {validation_method_and_result}
-- Final Response Time: {final_response_time}ms","Expected 40-50% MTTR reduction by providing direct New Relic URLs (eliminating search time), infrastructure identifiers (enabling immediate log/metric correlation), and actual performance values (allowing engineers to quickly assess severity and compare to baselines). Structured close notes will build a knowledge base for similar response time issues, enabling faster pattern recognition and potential auto-remediation for transient spikes."
-New Relic | FP&A | Needs Improvement,New Relic,FP&A,Needs Improvement,5,61.17,1471.13,"INC5908668, INC5935729, INC5917281, INC5851926, INC5886393","impacted host, pod, instance, CI, or SAP component: 5 | error code, alert code, exception, or failed transaction identifier: 5 | direct alert, trace, issue, or dashboard URL: 5 | action taken, workaround, validation result, or permanent fix: 5","This segment represents 5 New Relic incidents related to SAP Core BPM IDoc failures in the FP&A system area, all with identical missing signals and an average MTTR of ~24.5 hours. The incidents consistently lack critical diagnostic information: no specific IDoc numbers, error codes, or SAP component identifiers are captured; no direct URLs to New Relic issues or dashboards are provided despite Issue IDs being present; and resolution actions are entirely absent with only generic auto-close messages. The alerts trigger on generic query thresholds without surfacing the underlying IDoc failure details, forcing responders to manually investigate SAP systems without actionable starting points.","No IDoc document numbers or message IDs captured to identify specific failed transactions | Missing SAP error codes, status codes, or BPM workflow failure reasons | No identification of which SAP system component (PI/PO, BPM engine, backend system) experienced the failure | Lack of correlation between New Relic alert threshold breaches and actual IDoc processing logs | No capture of business context (cost center IDs, valid-from date issues mentioned in work notes but not in initial alert)","No automated retrieval of failed IDoc details from SAP transaction codes (WE02, WE05, SWI1) | Missing automatic linking to SAP BPM workflow logs or PI/PO message monitoring | No self-service runbook triggered for common IDoc failure patterns (date validation, authorization, RFC connectivity) | Lack of automated validation checks for data quality issues before escalation | No proactive notification to business users or data submitters when validation errors are detected","Add mandatory field for SAP IDoc document number(s) triggering the alert (comma-separated if multiple) | Include SAP status code and status text from IDoc processing (e.g., '51 - Application document not posted') | Capture SAP system ID, client, and specific component (e.g., 'P01/100/BPM_ENGINE' or 'PI_INTEGRATION_SERVER') | Embed direct New Relic issue URL using Issue ID pattern: https://one.newrelic.com/issues/{issue_id} | Add structured field for query result details: threshold value, actual value, and query timeframe | Include IDoc type, message type, and partner information from SAP metadata | Require resolution action categorization: DATA_CORRECTED, REPROCESSED, CONFIGURATION_CHANGED, FALSE_POSITIVE | Capture specific remediation steps taken including SAP transaction codes used and data corrections applied","**New Relic Alert: SAP BPM IDoc Failure - {IDoc_Type} for {Business_Process}**
+**Failure Context:**
+- Total Failed IDocs: {failed_count} | Query Result: {query_result}
+- First Failure: {first_occurrence} | Repeat Incident: {is_repeat}
+- Last Successful Processing: {last_success_timestamp}
 
-**Alert Details:**
-- Issue ID: {issue_id}
-- Issue URL: https://one.newrelic.com/issues/{issue_id}
-- Priority: {priority}
-- Alert Policy: {alert_policy}
-- Triggered: {timestamp}
-
-**SAP Component Details:**
-- System: {sap_system_id}/{client} (e.g., P01/100)
-- Component: {component_type} (BPM_ENGINE | PI_PO | BACKEND_SYSTEM)
-- IDoc Numbers: {idoc_numbers} (comma-separated)
-- IDoc Type/Message Type: {idoc_type}/{message_type}
-- Partner/Logical System: {partner_id}
-
-**Failure Information:**
-- SAP Status Code: {status_code}
-- Status Text: {status_text}
-- Error Message: {error_message}
-- Failed Step: {workflow_step_or_function_module}
-
-**Query Metrics:**
-- Threshold: >= {threshold_value}
-- Actual Result: {actual_value}
-- Query Period: {time_range}
-- Impacted Entity: {entity_name}
-
-**Business Context:**
-- Business Process: {process_name} (e.g., 'Create Cost Centers', 'Change Cost Centers')
-- Affected Business Objects: {object_ids}
-- Data Validation Issues: {validation_errors}
-
-**Investigation Links:**
+**Diagnostic Links:**
 - New Relic Dashboard: {dashboard_url}
-- SAP IDoc Monitor: Transaction WE02/WE05 - IDoc {idoc_numbers}
-- SAP BPM Workflow: Transaction SWI1 - Workflow {workflow_id}
+- SAP IDoc Monitor: {we05_url}
+- BPM Process Monitor: {bpm_monitor_url}
 
-**Resolution Actions:**
-- Action Taken: {action_category}
-- Remediation Steps: {detailed_steps}
-- SAP Transactions Used: {transaction_codes}
-- Data Corrections: {corrections_applied}
-- Validation Result: {validation_outcome}
-- Preventive Measures: {prevention_steps}","Expected 60-70% MTTR reduction (from ~24.5 hours to ~7-9 hours). Direct IDoc numbers and SAP status codes eliminate initial investigation time. Embedded URLs provide immediate access to monitoring tools. Structured business context enables faster data validation and correction. Automated runbooks for common failure patterns (date validation, authorization) can resolve 30-40% of incidents without manual SAP system access."
-SAP Cloud ALM | ERP SAP Core | Poor,SAP Cloud ALM,ERP SAP Core,Poor,4,35.5,43128.37,"INC5990857, INC5898345, INC5898348, INC6172885","impacted host, pod, instance, CI, or SAP component: 4 | metric value, threshold, or trigger condition: 4 | direct alert, trace, issue, or dashboard URL: 4 | correlation ID, issue ID, trace ID, or request ID: 4 | payload, alert policy, workflow, trigger, or additional attributes: 4 | root cause analysis in close notes: 4 | action taken, workaround, validation result, or permanent fix: 4","This segment represents SAP Cloud ALM monitoring incidents for ERP SAP Core systems with critically poor logging quality (average score 35.5). All four incidents lack fundamental diagnostic context including impacted components, metric thresholds, correlation IDs, and actionable resolution details. The extremely high average MTTR of 43,128 minutes (approximately 30 days) indicates that responders spend excessive time manually gathering context that should be automatically captured. Close notes are either generic ('System is working fine', '3-Strike Rule') or empty, providing no knowledge transfer for future incidents. This pattern suggests SAP Cloud ALM alert payloads are not being enriched before ticket creation, and incident workflows lack enforcement of diagnostic documentation standards.","No specific SAP component, host, or instance identifier captured (e.g., application server, database host, SAP SID) | Missing actual metric values and thresholds that triggered the alert (e.g., filesystem usage percentage, response time milliseconds) | No root cause documentation in close notes—incidents closed with generic statements or '3-Strike Rule' without analysis | Absence of correlation between related alerts or incidents for the same service/system | No differentiation between transient issues versus persistent problems requiring remediation","Alert payloads from SAP Cloud ALM not automatically enriched with CMDB CI details, hostnames, or SAP component hierarchy | No automated extraction or inclusion of direct alert URLs, trace IDs, or dashboard links for one-click investigation | Missing structured alert metadata (severity thresholds, alert policy names, trigger conditions) that would enable automated triage | No automated validation checks or self-healing workflows for common issues like filesystem full or response time degradation | Lack of standardized closure checklist preventing incidents from closing without RCA and remediation documentation","Mandate SAP Cloud ALM webhook/API integration to inject alert payload JSON including: alert ID, metric name, current value, threshold, severity, timestamp, and direct alert URL | Require CMDB enrichment at ticket creation: SAP SID, component type (ABAP/Java/HANA), hostname/instance, environment (prod/non-prod) | Enforce structured incident description template with sections: [Alert Details], [Impacted Component], [Metric/Threshold], [Investigation Links], [Initial Observations] | Implement mandatory closure fields: [Root Cause Category], [Metric Values at Incident/Resolution], [Remediation Action], [Validation Method], [Prevention Steps] | Add correlation ID field to link related alerts from same service within time window (e.g., SAP Cloud ALM alert UUID or service instance ID) | Require attachment or embedding of relevant SAP Cloud ALM dashboard screenshots or exported metric graphs for trend analysis","**INCIDENT ALERT: [Alert_Type] on [SAP_SID]**
+**Recommended Actions:**
+1. Review IDoc error details in SAP (WE02: {idoc_number})
+2. Common Issue: Verify Valid From date is current year ({current_year})
+3. Check cost center master data completeness
+4. Reprocess via BD87 after data correction
+5. Validate BPM workflow step completion
 
-**Alert Details:**
-- Alert ID: [Cloud_ALM_Alert_UUID]
-- Service: [Service_Name] ([Service_Type])
-- Severity: [WARNING/ERROR/CRITICAL]
-- Triggered: [ISO_Timestamp]
-- Alert URL: [Direct_Link_to_Cloud_ALM_Alert]
-
-**Impacted Component:**
-- SAP System ID: [SID]
-- Component: [ABAP_Instance/HANA_DB/Java_Instance]
-- Hostname: [Fully_Qualified_Hostname]
-- Instance Number: [Instance_Nr]
-- Environment: [Production/Non-Production]
-
-**Metric & Threshold:**
-- Metric: [Response_Time/Filesystem_Usage/CPU/Memory]
-- Current Value: [Numeric_Value] [Unit]
-- Threshold: [Threshold_Value] [Unit]
-- Condition: [Greater_Than/Less_Than/Equal_To]
-
-**Investigation Resources:**
-- Dashboard: [Cloud_ALM_Dashboard_URL]
-- Trace ID: [Trace_ID_if_applicable]
-- Correlation ID: [Alert_Group_ID]
-- Related Incidents: [Auto-linked_INC_numbers]
-
-**Initial Triage Notes:**
-[Auto-populated system health checks: recent changes, related alerts, historical pattern]
-
-**CLOSURE REQUIREMENTS:**
-- Root Cause: [Detailed_technical_cause]
-- Metric at Resolution: [Value] [Unit] at [Timestamp]
-- Action Taken: [Specific_commands/configs_changed]
-- Validation: [How_resolution_confirmed]
-- Prevention: [Config_change/automation_implemented]","Implementing these logging standards is expected to reduce average MTTR by 60-75% (from ~30 days to 7-10 days) by eliminating manual context gathering, enabling direct navigation to SAP Cloud ALM diagnostics, providing clear thresholds for validation, and building a searchable knowledge base through structured RCA documentation. Automated enrichment and mandatory closure fields will also enable future self-healing automation for repetitive alert types like filesystem full warnings."
-SAP Cloud ALM | Integration | Needs Improvement,SAP Cloud ALM,Integration,Needs Improvement,1,50.5,10.67,INC6111223,"impacted host, pod, instance, CI, or SAP component: 1 | metric value, threshold, or trigger condition: 1 | direct alert, trace, issue, or dashboard URL: 1 | correlation ID, issue ID, trace ID, or request ID: 1 | payload, alert policy, workflow, trigger, or additional attributes: 1 | root cause analysis in close notes: 1","This segment represents SAP Cloud ALM integration monitoring incidents with moderate priority that lack critical diagnostic context. The incidents originate from Cloud ALM for Operations health monitoring (ABAP Response Time metrics) but fail to capture essential troubleshooting data. With a score of 50.5, these incidents provide basic service identification but omit the specific infrastructure context, metric thresholds, correlation identifiers, and root cause analysis needed for efficient resolution. The 10.67-minute MTTR suggests quick resolution, but the missing signals indicate reliance on manual investigation or tribal knowledge rather than self-service diagnostics.","No metric threshold or actual response time value captured to determine severity of performance degradation | Missing specific SAP component, ABAP instance, or application server identification within the S/4HANA landscape | No correlation ID or trace ID linking the alert to specific user transactions or background jobs | Close notes contain only generic 'Alert closed from CALM Event Situation' without documented root cause or remediation steps | No reference to alert policy configuration or health monitoring rule that triggered the incident | Missing dashboard or Cloud ALM situation URL for responders to access full context",No structured payload containing metric values that could enable automated threshold-based routing or auto-remediation | Missing CI/pod/host identification prevents automated correlation with infrastructure events or capacity metrics | Lack of trace/correlation IDs prevents automated linking to related incidents or change records | No workflow or runbook reference that could guide automated or semi-automated response actions | Absence of structured alert attributes prevents automated enrichment from CMDB or topology data | Generic close notes prevent machine learning from incident resolution patterns or automated suggestion of fixes,"Add mandatory fields to Cloud ALM integration template: 'sap_component' (e.g., ABAP instance ID), 'host_name', 'client_number', and 'system_id' (SID) | Require 'metric_name', 'current_value', 'threshold_value', and 'threshold_operator' fields for all performance-related alerts | Include 'calm_situation_id' and 'calm_situation_url' as mandatory correlation identifiers with direct links to Cloud ALM console | Capture 'alert_rule_name', 'health_monitoring_scope', and 'data_collection_job_id' to identify triggering configuration | Enforce structured close notes schema requiring 'root_cause_category', 'resolution_action', 'affected_transactions' (if applicable), and 'preventive_measures' | Add 'related_trace_ids', 'user_context', and 'business_process' fields when available from Cloud ALM telemetry | Include 'auto_resolved' boolean flag and 'resolution_source' (manual/auto/calm) to track self-healing capability","{
-  ""alert_source"": ""SAP Cloud ALM for Operations"",
-  ""service_name"": ""{{service_name}}"",
-  ""service_type"": ""{{service_type}}"",
-  ""sap_system_id"": ""{{sid}}"",
-  ""sap_client"": ""{{client_number}}"",
-  ""sap_component"": ""{{component_name}} ({{instance_id}})"",
-  ""host_name"": ""{{hostname}}"",
-  ""metric"": {
-    ""name"": ""{{metric_name}}"",
-    ""current_value"": {{current_value}},
-    ""unit"": ""{{unit}}"",
-    ""threshold"": {{threshold_value}},
-    ""operator"": ""{{operator}}"",
-    ""duration"": ""{{duration_seconds}}s""
-  },
-  ""correlation"": {
-    ""calm_situation_id"": ""{{situation_id}}"",
-    ""calm_situation_url"": ""{{calm_console_url}}"",
-    ""trace_ids"": [{{trace_id_list}}],
-    ""request_ids"": [{{request_id_list}}]
-  },
-  ""alert_config"": {
-    ""rule_name"": ""{{alert_rule_name}}"",
-    ""health_scope"": ""{{monitoring_scope}}"",
-    ""collection_job_id"": ""{{job_id}}""
-  },
-  ""timestamps"": {
-    ""alert_start"": ""{{start_time_iso}}"",
-    ""last_update"": ""{{update_time_iso}}"",
-    ""detected"": ""{{detection_time_iso}}""
-  },
-  ""resolution"": {
-    ""auto_resolved"": {{boolean}},
-    ""resolution_source"": ""{{manual|auto|calm}}"",
-    ""root_cause_category"": ""{{category}}"",
-    ""resolution_action"": ""{{action_taken}}"",
-    ""affected_transactions"": [{{transaction_codes}}],
-    ""preventive_measures"": ""{{prevention_steps}}""
-  },
-  ""runbook_url"": ""{{runbook_link}}""
-}","These logging improvements are expected to reduce MTTR by 40-60% by eliminating manual lookup of system topology, metric baselines, and Cloud ALM situation details. Structured metric values and thresholds enable immediate severity assessment, while correlation IDs and direct URLs reduce navigation time from 3-5 minutes to under 30 seconds. Mandatory root cause documentation builds a searchable knowledge base for similar incidents, enabling pattern recognition and eventual auto-remediation of recurring ABAP performance issues."
+**Alert Policy:** {alert_policy_name} | Condition: {alert_condition_name}","Expected MTTR reduction from ~24 hours to 2-4 hours (75-85% improvement). Specific IDoc numbers, SAP error codes, and direct system links enable immediate diagnosis without manual system navigation. Embedded validation guidance (e.g., valid-from date requirements) addresses the most common root cause directly. Automated capture of business context (cost center IDs, operation types) eliminates time spent correlating technical failures with business impact, while deep-links to SAP transactions (WE02, BD87) and New Relic dashboards accelerate investigation and enable faster reprocessing workflows."
